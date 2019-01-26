@@ -54,7 +54,7 @@ Theodoric.Game.prototype = {
         this.goldForBoss = 5000;
         this.bossSpawned = false;
         this.bossColorIndex = 0;
-
+        this.hasPlayground = false;
         // Generate objects
         this.generateObstacles();
         this.generateCollectables();
@@ -176,6 +176,15 @@ Theodoric.Game.prototype = {
             if (enemy.visible && enemy.inCamera) {
                 if(enemy.name == 'Spider' &&  this.gold == 0){
                     this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
+                } else if(enemy.name == 'Bat' && this.hasPlayground){
+
+
+                    if(! enemy.isCaptured){
+
+                   this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
+
+                     }
+
                 }
                 else{
                  this.game.physics.arcade.moveFromObject(enemy, this.player, enemy.speed)
@@ -422,10 +431,16 @@ Theodoric.Game.prototype = {
                 this.notification = 'You pick up ' + collectable.value + ' gold.';
                 collectable.destroy();
             }
-            else if (collectable.name === 'playground') {
+            else if (collectable.name === 'playground' ) {
+                this.hasPlayground = true;
                 this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
                 this.enemyMovementHandler(collectable);
 
+            }
+            else if (  collectable.name === 'Bat' && collectable.isCaptured){
+                collectable.speed = 1000;
+                this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
+                this.enemyMovementHandler(collectable);
 
             } else if (collectable.name === 'chest') {
                 collectable.animations.play('open');
@@ -629,6 +644,7 @@ Theodoric.Game.prototype = {
         enemy.animations.add('right', [75, 76, 77], 10, true);
         enemy.animations.add('up', [87, 88, 89], 10, true);
         enemy.howBig = 0;
+        enemy.isCaptured = false;
         return this.setStats(enemy, 'Bat', 20, 5, 10, 2, 8);
     },
 
