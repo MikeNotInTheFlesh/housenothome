@@ -425,11 +425,41 @@ Theodoric.Game.prototype = {
         }
     },
 
+
+    setStats: function (entity, name, health, speed, strength, reward, corpseSprite) {
+
+        entity.animations.play('down');
+        entity.scale.setTo(2);
+
+        entity.body.collideWorldBounds = true;
+        entity.body.velocity.x = 0,
+        entity.body.velocity.y = 0,
+        entity.alive = true;
+
+        entity.name = name;
+        entity.level = this.player.level;
+        entity.health = health + (entity.level * 2);
+        entity.speed = speed + Math.floor(entity.level * 1.5);;
+        entity.strength = strength + Math.floor(entity.level * 1.5);;
+        entity.reward = reward + Math.floor(entity.level * 1.5);
+
+        entity.invincibilityFrames = 300;
+        entity.invincibilityTime = 0;
+
+        entity.corpseSprite = corpseSprite;
+
+        return entity;
+    },
+
+
+    
+
+
     generatePlayer: function () {
 
         // Generate the player
         var player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'characters');
-
+        var influence = this.game.add.sprite(this.game.world.centerX - (5*8), this.game.world.centerY - (5*8), 'characters');
         // Loop through frames 3, 4, and 5 at 10 frames a second while the animation is playing
         player.animations.add('down', [3, 4, 5], 10, true);
         player.animations.add('left', [15, 16, 17], 10, true);
@@ -438,10 +468,21 @@ Theodoric.Game.prototype = {
         player.animations.play('down');
         player.scale.setTo(2);
 
+        influence.animations.add('down', [3, 4, 5], 10, true);
+        influence.animations.add('left', [15, 16, 17], 10, true);
+        influence.animations.add('right', [27, 28, 29], 10, true);
+        influence.animations.add('up', [39, 40, 41], 10, true);
+        influence.animations.play('down');
+        influence.scale.setTo(10);
+
+
+
         // Enable player physics;
         this.game.physics.arcade.enable(player);
         player.body.collideWorldBounds = true
         player.alive = true;
+       // influence.body.collideWorldBounds = false
+        this.game.physics.arcade.enable(influence);
 
         player.name = 'Theodoric';
         player.level = 1;
@@ -860,6 +901,10 @@ Theodoric.Game.prototype = {
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
         }
+      // This does not work.  
+      //  this.instance.body.velocity.x = this.player.body.velocity.x;
+      //  this.instance.body.velocity.x = this.player.body.velocity.y
+
     },
 
     enemyMovementHandler: function (enemy) {
