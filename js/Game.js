@@ -265,8 +265,11 @@ Theodoric.Game.prototype = {
          this.game.physics.arcade.collide(this.obstacles, this.player, null, null, this);
          this.game.physics.arcade.collide(this.obstacles, this.playerAttacks, null, null, this);
         this.game.physics.arcade.collide(this.obstacles, this.enemies, null, null, this);
-
+       
+       // this.game.physics.arcade.collide(this.collectables, this.player, this.collect, null, this);
+       
         this.game.physics.arcade.overlap(this.collectables, this.player, this.collect, null, this);
+       
         this.game.physics.arcade.overlap(this.enemies, this.player, this.collect, null, this);
     },
 
@@ -402,6 +405,12 @@ Theodoric.Game.prototype = {
 
     collect: function(player, collectable) {
         collectable.health = 0;
+        if(collectable.collected && collectable.name === 'playground'){
+            this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
+            this.enemyMovementHandler(collectable);
+
+        }
+
         if (!collectable.collected) {
             collectable.collected = true;
             
@@ -412,6 +421,12 @@ Theodoric.Game.prototype = {
                 this.goldSound.play();
                 this.notification = 'You pick up ' + collectable.value + ' gold.';
                 collectable.destroy();
+            }
+            else if (collectable.name === 'playground') {
+                this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
+                this.enemyMovementHandler(collectable);
+
+
             } else if (collectable.name === 'chest') {
                 collectable.animations.play('open');
                 this.gold += collectable.value;
@@ -754,7 +769,27 @@ Theodoric.Game.prototype = {
             var point = this.getRandomLocation();
             this.generateChest(point);
         }
+        for (var i = 0; i < amount; i++) {
+            var point = this.getRandomLocation();
+            this.generatePlayground(point);
+        }
+
+
     },
+
+    generatePlayground: function (location) {
+
+        var collectable = this.collectables.create(location.x, location.y, 'things');
+        collectable.scale.setTo(2);
+        collectable.animations.add('idle', [1], 0, true);
+       // collectable.animations.add('open', [18, 30, 42], 10, false);
+        collectable.animations.play('idle');
+        collectable.name = 'playground'
+        collectable.value =0;// Math.floor(Math.random() * 150);
+        return collectable;
+    },
+
+
 
     generateChest: function (location) {
 
