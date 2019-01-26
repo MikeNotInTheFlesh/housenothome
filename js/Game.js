@@ -55,6 +55,9 @@ HouseNotHome.Game.prototype = {
         this.bossSpawned = false;
         this.bossColorIndex = 0;
         this.hasPlayground = false;
+        this.hasChildren = false;
+        this.hasParents = false;
+        this.hasGrandparents = false;
         // Generate objects
         this.generateObstacles();
         this.generateCollectables();
@@ -183,9 +186,13 @@ HouseNotHome.Game.prototype = {
                     this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
                 } else if(enemy.name == 'Bat' && this.hasPlayground){
 
-                    if(! enemy.isCaptured){
+                    if(!this.hasChildren){
                         this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
-                     }
+                    } else {
+                        enemy.position.x = this.player.position.x - 20;
+                        enemy.position.y = this.player.position.y;
+                        enemy.speed = 0;
+                    }
 
                 }
                 else{
@@ -420,11 +427,9 @@ HouseNotHome.Game.prototype = {
 
     collect: function(player, collectable) {
         collectable.health = 0;
-        if(collectable.collected && collectable.name === 'playground'){
-            //this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
+        if(collectable.collected && (collectable.name === 'playground' || collectable.name === 'bat')){
             collectable.position.x = this.player.position.x - 20;
             collectable.position.y = this.player.position.y;
-            //this.enemyMovementHandler(collectable);
         }
 
         if (!collectable.collected) {
@@ -448,10 +453,13 @@ HouseNotHome.Game.prototype = {
                 collectable.position.x = this.player.position.x - 20;
                 collectable.position.y = this.player.position.y;
             }
-            else if (  collectable.name === 'Bat' && collectable.isCaptured){
-                collectable.speed = 1000;
-                this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
-                this.enemyMovementHandler(collectable);
+            else if (  collectable.name === 'Bat'){
+                //collectable.speed = 1000;
+                //this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
+                //this.enemyMovementHandler(collectable);
+                this.hasChildren = true;
+                collectable.position.x = this.player.position.x - 20;
+                collectable.position.y = this.player.position.y;
 
             } else if (collectable.name === 'chest') {
                 collectable.animations.play('open');
