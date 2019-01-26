@@ -88,6 +88,7 @@ Theodoric.Game.prototype = {
         // Set the controls
         this.controls = {
             up: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
+           // touchit: this.game.input.touch.onTouchStart,
             left: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
             down: this.game.input.keyboard.addKey(Phaser.Keyboard.S),
             right: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
@@ -139,7 +140,7 @@ Theodoric.Game.prototype = {
                     this.playerSpells.rate = 5000;
                     this.playerSpells.range = this.player.strength * 6;
                     this.attack(this.player, this.playerSpells);
-                    this.spellCooldown = this.game.time.now + 15000;
+                    this.spellCooldown = this.game.time.now + 5000;
                 }
             } else {
                 this.spellLabel.text = "RECHARGING...";
@@ -232,8 +233,8 @@ Theodoric.Game.prototype = {
     },
 
     collisionHandler: function() {
-
-        this.game.physics.arcade.overlap(this.player, this.enemies, this.hit, null, this);
+      //  this.game.physics.arcade.overlap(this.enemies, this.player,this.hit, null, this);
+       // this.game.physics.arcade.overlap(this.player, this.enemies, this.hit, null, this);
        // this.game.physics.arcade.collide(this.player, this.bosses, this.hit, null, this);
        // this.game.physics.arcade.collide(this.player, this.bossAttacks, this.hit, null, this);
 
@@ -252,6 +253,7 @@ Theodoric.Game.prototype = {
         this.game.physics.arcade.collide(this.obstacles, this.enemies, null, null, this);
 
         this.game.physics.arcade.overlap(this.collectables, this.player, this.collect, null, this);
+        this.game.physics.arcade.overlap(this.enemies, this.player, this.collect, null, this);
     },
 
     showLabels: function() {
@@ -385,7 +387,7 @@ Theodoric.Game.prototype = {
     },
 
     collect: function(player, collectable) {
-
+        collectable.health = 0;
         if (!collectable.collected) {
             collectable.collected = true;
             
@@ -428,6 +430,11 @@ Theodoric.Game.prototype = {
                 this.potionSound.play();
                 collectable.destroy();
             }
+            else{ //enemies
+                this.howBig +=  (0.2)/(Math.sqrt(this.howBig)) ;
+                this.player.scale.setTo(this.howBig);
+
+            } 
 
         }
     },
@@ -854,6 +861,29 @@ Theodoric.Game.prototype = {
     },
 
     playerMovementHandler: function () {
+        isDownTouch = false;
+        isUpTouch = false;
+        isLeftTouch = false;
+        isRightTouch = false;
+        if(this.game.input.activePointer.isDown){
+            if(this.game.input.activePointer.position.x < this.game.width *0.20 ){
+                isLeftTouch = true;
+            }
+            if(this.game.input.activePointer.position.x > this.game.width *0.80 ){
+                isRightTouch = true;
+            }
+            if(this.game.input.activePointer.position.y < this.game.height *0.20 ){
+                isUpTouch = true;
+            }
+            if(this.game.input.activePointer.position.y > this.game.height *0.80 ){
+                isDownTouch = true;
+            }
+
+
+
+
+
+        };
 
         // Up-Left
         if (this.controls.up.isDown && this.controls.left.isDown) {
@@ -880,28 +910,39 @@ Theodoric.Game.prototype = {
             this.player.animations.play('right');
 
         // Up
-        } else if (this.controls.up.isDown) {
+        } else if (this.controls.up.isDown || isUpTouch) {
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = -this.player.speed;
             this.player.animations.play('up');
 
         // Down
-        } else if (this.controls.down.isDown) {
+        } else if (this.controls.down.isDown || isDownTouch) {
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = this.player.speed;
             this.player.animations.play('down');
 
         // Left
-        } else if (this.controls.left.isDown) {
+        } else if (this.controls.left.isDown || isLeftTouch) {
             this.player.body.velocity.x = -this.player.speed;
             this.player.body.velocity.y = 0;
             this.player.animations.play('left');
 
         // Right
-        } else if (this.controls.right.isDown) {
+        } else if (this.controls.right.isDown || isRightTouch) {
             this.player.body.velocity.x = this.player.speed;
             this.player.body.velocity.y = 0;
             this.player.animations.play('right');
+
+       // }// else if (this.game.input.activePointer.isDown){
+         //   if(this.game.input.activePointer.position.x < this.game.width *0.20 ){
+
+           // console.log(this.game.input.activePointer.position.y);
+           
+         //   this.player.body.velocity.x = - this.player.speed;
+          //  this.player.body.velocity.y = 0;
+           // this.player.animations.play('left');
+           // }
+
 
         // Still
         } else {
