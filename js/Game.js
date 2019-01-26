@@ -48,6 +48,7 @@ Theodoric.Game.prototype = {
         this.spellCooldown = 0;
         this.gold = 0;
         this.xp = 0;
+        this.howBig = 0;
         this.xpToNext = 20;
         this.goldForBoss = 5000;
         this.bossSpawned = false;
@@ -402,6 +403,7 @@ Theodoric.Game.prototype = {
                 this.notification = 'You open a chest and find ' + collectable.value + ' gold!';
                 collectable.lifespan = 1000;
                 this.player.scale.setTo(4) //    this.player.scale +1  )
+
             } else if (collectable.name === 'healthPotion') {
                 player.health += collectable.value;
                 this.notification = 'You consume a potion, healing you for ' + collectable.value + ' health.';
@@ -566,6 +568,7 @@ Theodoric.Game.prototype = {
         enemy.animations.add('left', [21, 22, 23], 10, true);
         enemy.animations.add('right', [33, 34, 35], 10, true);
         enemy.animations.add('up', [45, 46, 47], 10, true);
+        enemy.howBig = 2;
          // setStats: function (entity, name, health, speed, strength, reward, corpseSprite) 
         return this.setStats(enemy, 'Skeleton', 100, 5, 20, 5, 6);
     },
@@ -576,7 +579,7 @@ Theodoric.Game.prototype = {
         enemy.animations.add('left', [60, 61, 62], 10, true);
         enemy.animations.add('right', [72, 73, 74], 10, true);
         enemy.animations.add('up', [84, 85, 86], 10, true);
-
+        enemy.howBig = 1;
         return this.setStats(enemy, 'Slime', 300, 5, 50, 10, 7);
     },
 
@@ -586,7 +589,7 @@ Theodoric.Game.prototype = {
         enemy.animations.add('left', [63, 64, 65], 10, true);
         enemy.animations.add('right', [75, 76, 77], 10, true);
         enemy.animations.add('up', [87, 88, 89], 10, true);
-
+        enemy.howBig = 0;
         return this.setStats(enemy, 'Bat', 20, 5, 10, 2, 8);
     },
 
@@ -596,7 +599,7 @@ Theodoric.Game.prototype = {
         enemy.animations.add('left', [66, 67, 68], 10, true);
         enemy.animations.add('right', [78, 79, 80], 10, true);
         enemy.animations.add('up', [90, 91, 92], 10, true);
-
+        enemy.howBig = 3;
         return this.setStats(enemy, 'Ghost', 200, 5, 30, 7, 9);
     },
 
@@ -606,7 +609,7 @@ Theodoric.Game.prototype = {
         enemy.animations.add('left', [69, 70, 71], 10, true);
         enemy.animations.add('right', [81, 82, 83], 10, true);
         enemy.animations.add('up', [93, 94, 95], 10, true);
-
+        enemy.howBig = 4;
         return this.setStats(enemy, 'Spider', 50, 5, 12, 4, 10);
     },
 
