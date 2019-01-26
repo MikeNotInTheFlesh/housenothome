@@ -1,10 +1,10 @@
-var Theodoric = {};
+var HouseNotHome = {};
 
-Theodoric.Boot = function (game) {
+HouseNotHome.Boot = function (game) {
 
 };
 
-Theodoric.Boot.prototype = {
+HouseNotHome.Boot.prototype = {
 
     init: function () {
 

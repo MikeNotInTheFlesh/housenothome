@@ -1,5 +1,5 @@
 
-Theodoric.Preloader = function (game) {
+HouseNotHome.Preloader = function (game) {
 
 	this.background = null;
 	this.preloadBar = null;
@@ -7,7 +7,7 @@ Theodoric.Preloader = function (game) {
 	this.ready = false;
 };
 
-Theodoric.Preloader.prototype = {
+HouseNotHome.Preloader.prototype = {
 
 	preload: function () {
 
