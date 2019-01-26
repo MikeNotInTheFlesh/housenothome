@@ -142,7 +142,7 @@ HouseNotHome.Game.prototype = {
                 if(this.gold > 0){
                     this.gold = this.gold - 1;
                 }
-                
+
             }
 
 
@@ -276,11 +276,11 @@ HouseNotHome.Game.prototype = {
          this.game.physics.arcade.collide(this.obstacles, this.player, null, null, this);
          this.game.physics.arcade.collide(this.obstacles, this.playerAttacks, null, null, this);
         this.game.physics.arcade.collide(this.obstacles, this.enemies, null, null, this);
-       
+
        // this.game.physics.arcade.collide(this.collectables, this.player, this.collect, null, this);
-       
+
         this.game.physics.arcade.overlap(this.collectables, this.player, this.collect, null, this);
-       
+
         this.game.physics.arcade.overlap(this.enemies, this.player, this.collect, null, this);
     },
 
@@ -429,7 +429,7 @@ HouseNotHome.Game.prototype = {
 
         if (!collectable.collected) {
             collectable.collected = true;
-            
+
             var gain;
             if (collectable.name === 'gold') {
                 gain = this.player.level + Math.floor(Math.random() * 10);
@@ -440,6 +440,7 @@ HouseNotHome.Game.prototype = {
             }
             else if (collectable.name === 'playground' ) {
                 if (this.hasPlayground) {
+                  this.gold += collectable.value;
                     this.destory;
                 }
                 this.hasPlayground = true;
@@ -461,7 +462,7 @@ HouseNotHome.Game.prototype = {
                 collectable.lifespan = 1000;
                // console.log("about to grow")
                 //console.log("growing to" + this.howBig+2);
-                //this.player.scale.setTo(6);    
+                //this.player.scale.setTo(6);
                 this.howBig +=  (0.2)/(Math.sqrt(this.howBig)) ;
                 this.player.scale.setTo(this.howBig);
             } else if (collectable.name === 'healthPotion') {
@@ -489,7 +490,7 @@ HouseNotHome.Game.prototype = {
                 this.howBig +=  (0.2)/(Math.sqrt(this.howBig)) ;
                 this.player.scale.setTo(this.howBig);
 
-            } 
+            }
 
         }
     },
@@ -521,7 +522,7 @@ HouseNotHome.Game.prototype = {
     },
 
 
-    
+
 
 
     generatePlayer: function () {
@@ -634,7 +635,7 @@ HouseNotHome.Game.prototype = {
         enemy.animations.add('right', [33, 34, 35], 10, true);
         enemy.animations.add('up', [45, 46, 47], 10, true);
         enemy.howBig = 2;
-         // setStats: function (entity, name, health, speed, strength, reward, corpseSprite) 
+         // setStats: function (entity, name, health, speed, strength, reward, corpseSprite)
         return this.setStats(enemy, 'Skeleton', 100, 5, 20, 5, 6);
     },
 
@@ -812,7 +813,7 @@ HouseNotHome.Game.prototype = {
        // collectable.animations.add('open', [18, 30, 42], 10, false);
         collectable.animations.play('idle');
         collectable.name = 'playground'
-        collectable.value =0;// Math.floor(Math.random() * 150);
+        collectable.value =5;// Math.floor(Math.random() * 150);
         return collectable;
     },
 
@@ -841,7 +842,7 @@ HouseNotHome.Game.prototype = {
         return collectable;
     },
 
-    generatePotion: function (location) {   
+    generatePotion: function (location) {
 
         var rnd = Math.random();
         if (rnd >= 0 && rnd < .7) {
@@ -1013,7 +1014,7 @@ HouseNotHome.Game.prototype = {
          //   if(this.game.input.activePointer.position.x < this.game.width *0.20 ){
 
            // console.log(this.game.input.activePointer.position.y);
-           
+
          //   this.player.body.velocity.x = - this.player.speed;
           //  this.player.body.velocity.y = 0;
            // this.player.animations.play('left');
@@ -1026,7 +1027,7 @@ HouseNotHome.Game.prototype = {
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
         }
-      // This does not work.  
+      // This does not work.
       //  this.instance.body.velocity.x = this.player.body.velocity.x;
       //  this.instance.body.velocity.x = this.player.body.velocity.y
 
