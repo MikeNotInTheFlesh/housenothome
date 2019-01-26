@@ -387,6 +387,7 @@ Theodoric.Game.prototype = {
 
         if (!collectable.collected) {
             collectable.collected = true;
+            
             var gain;
             if (collectable.name === 'gold') {
                 gain = this.player.level + Math.floor(Math.random() * 10);
@@ -400,6 +401,7 @@ Theodoric.Game.prototype = {
                 this.goldSound.play();
                 this.notification = 'You open a chest and find ' + collectable.value + ' gold!';
                 collectable.lifespan = 1000;
+                this.player.scale.setTo(4) //    this.player.scale +1  )
             } else if (collectable.name === 'healthPotion') {
                 player.health += collectable.value;
                 this.notification = 'You consume a potion, healing you for ' + collectable.value + ' health.';
@@ -459,7 +461,7 @@ Theodoric.Game.prototype = {
 
         // Generate the player
         var player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'characters');
-        var influence = this.game.add.sprite(this.game.world.centerX - (5*8), this.game.world.centerY - (5*8), 'characters');
+        //var influence = this.game.add.sprite(this.game.world.centerX - (5*8), this.game.world.centerY - (5*8), 'characters');
         // Loop through frames 3, 4, and 5 at 10 frames a second while the animation is playing
         player.animations.add('down', [3, 4, 5], 10, true);
         player.animations.add('left', [15, 16, 17], 10, true);
@@ -468,12 +470,12 @@ Theodoric.Game.prototype = {
         player.animations.play('down');
         player.scale.setTo(2);
 
-        influence.animations.add('down', [3, 4, 5], 10, true);
-        influence.animations.add('left', [15, 16, 17], 10, true);
-        influence.animations.add('right', [27, 28, 29], 10, true);
-        influence.animations.add('up', [39, 40, 41], 10, true);
-        influence.animations.play('down');
-        influence.scale.setTo(10);
+       // influence.animations.add('down', [3, 4, 5], 10, true);
+       // influence.animations.add('left', [15, 16, 17], 10, true);
+       // influence.animations.add('right', [27, 28, 29], 10, true);
+       // influence.animations.add('up', [39, 40, 41], 10, true);
+       // influence.animations.play('down');
+        //influence.scale.setTo(10);
 
 
 
@@ -482,7 +484,7 @@ Theodoric.Game.prototype = {
         player.body.collideWorldBounds = true
         player.alive = true;
        // influence.body.collideWorldBounds = false
-        this.game.physics.arcade.enable(influence);
+       // this.game.physics.arcade.enable(influence);
 
         player.name = 'Theodoric';
         player.level = 1;
