@@ -163,7 +163,7 @@ Theodoric.Game.prototype = {
 
         this.enemies.forEachAlive(function(enemy) {
             if (enemy.visible && enemy.inCamera) {
-                this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
+                this.game.physics.arcade.moveFromObject(enemy, this.player, enemy.speed)
                 this.enemyMovementHandler(enemy);
             }
 
@@ -232,22 +232,22 @@ Theodoric.Game.prototype = {
 
     collisionHandler: function() {
 
-        this.game.physics.arcade.collide(this.player, this.enemies, this.hit, null, this);
-        this.game.physics.arcade.collide(this.player, this.bosses, this.hit, null, this);
-        this.game.physics.arcade.collide(this.player, this.bossAttacks, this.hit, null, this);
+        this.game.physics.arcade.overlap(this.player, this.enemies, this.hit, null, this);
+       // this.game.physics.arcade.collide(this.player, this.bosses, this.hit, null, this);
+       // this.game.physics.arcade.collide(this.player, this.bossAttacks, this.hit, null, this);
 
-        this.game.physics.arcade.collide(this.bosses, this.playerAttacks, this.hit, null, this);
-        this.game.physics.arcade.collide(this.enemies, this.playerAttacks, this.hit, null, this);
-        this.game.physics.arcade.overlap(this.bosses, this.playerAttacks, this.hit, null, this);
-        this.game.physics.arcade.overlap(this.enemies, this.playerAttacks, this.hit, null, this);
+       // this.game.physics.arcade.collide(this.bosses, this.playerAttacks, this.hit, null, this);
+       // this.game.physics.arcade.collide(this.enemies, this.playerAttacks, this.hit, null, this);
+       // this.game.physics.arcade.overlap(this.bosses, this.playerAttacks, this.hit, null, this);
+       // this.game.physics.arcade.overlap(this.enemies, this.playerAttacks, this.hit, null, this);
 
-        this.game.physics.arcade.collide(this.bosses, this.playerSpells, this.hit, null, this);
-        this.game.physics.arcade.collide(this.enemies, this.playerSpells, this.hit, null, this);
-        this.game.physics.arcade.overlap(this.bosses, this.playerSpells, this.hit, null, this);
-        this.game.physics.arcade.overlap(this.enemies, this.playerSpells, this.hit, null, this);
+       //  this.game.physics.arcade.collide(this.bosses, this.playerSpells, this.hit, null, this);
+       // this.game.physics.arcade.collide(this.enemies, this.playerSpells, this.hit, null, this);
+       // this.game.physics.arcade.overlap(this.bosses, this.playerSpells, this.hit, null, this);
+        // this.game.physics.arcade.overlap(this.enemies, this.playerSpells, this.hit, null, this);
 
-        this.game.physics.arcade.collide(this.obstacles, this.player, null, null, this);
-        this.game.physics.arcade.collide(this.obstacles, this.playerAttacks, null, null, this);
+         this.game.physics.arcade.collide(this.obstacles, this.player, null, null, this);
+         this.game.physics.arcade.collide(this.obstacles, this.playerAttacks, null, null, this);
         this.game.physics.arcade.collide(this.obstacles, this.enemies, null, null, this);
 
         this.game.physics.arcade.overlap(this.collectables, this.player, this.collect, null, this);
@@ -523,8 +523,8 @@ Theodoric.Game.prototype = {
         enemy.animations.add('left', [21, 22, 23], 10, true);
         enemy.animations.add('right', [33, 34, 35], 10, true);
         enemy.animations.add('up', [45, 46, 47], 10, true);
-
-        return this.setStats(enemy, 'Skeleton', 100, 70, 20, 5, 6);
+         // setStats: function (entity, name, health, speed, strength, reward, corpseSprite) 
+        return this.setStats(enemy, 'Skeleton', 100, 5, 20, 5, 6);
     },
 
     generateSlime: function (enemy) {
@@ -534,7 +534,7 @@ Theodoric.Game.prototype = {
         enemy.animations.add('right', [72, 73, 74], 10, true);
         enemy.animations.add('up', [84, 85, 86], 10, true);
 
-        return this.setStats(enemy, 'Slime', 300, 40, 50, 10, 7);
+        return this.setStats(enemy, 'Slime', 300, 5, 50, 10, 7);
     },
 
     generateBat: function (enemy) {
@@ -544,7 +544,7 @@ Theodoric.Game.prototype = {
         enemy.animations.add('right', [75, 76, 77], 10, true);
         enemy.animations.add('up', [87, 88, 89], 10, true);
 
-        return this.setStats(enemy, 'Bat', 20, 200, 10, 2, 8);
+        return this.setStats(enemy, 'Bat', 20, 5, 10, 2, 8);
     },
 
     generateGhost: function (enemy) {
@@ -554,7 +554,7 @@ Theodoric.Game.prototype = {
         enemy.animations.add('right', [78, 79, 80], 10, true);
         enemy.animations.add('up', [90, 91, 92], 10, true);
 
-        return this.setStats(enemy, 'Ghost', 200, 60, 30, 7, 9);
+        return this.setStats(enemy, 'Ghost', 200, 5, 30, 7, 9);
     },
 
     generateSpider: function (enemy) {
@@ -564,7 +564,7 @@ Theodoric.Game.prototype = {
         enemy.animations.add('right', [81, 82, 83], 10, true);
         enemy.animations.add('up', [93, 94, 95], 10, true);
 
-        return this.setStats(enemy, 'Spider', 50, 120, 12, 4, 10);
+        return this.setStats(enemy, 'Spider', 50, 5, 12, 4, 10);
     },
 
     generateDragon: function (colorIndex) {
