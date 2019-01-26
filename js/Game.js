@@ -48,7 +48,7 @@ Theodoric.Game.prototype = {
         this.spellCooldown = 0;
         this.gold = 0;
         this.xp = 0;
-        this.howBig = 0;
+        this.howBig = 2;
         this.xpToNext = 20;
         this.goldForBoss = 5000;
         this.bossSpawned = false;
@@ -402,8 +402,11 @@ Theodoric.Game.prototype = {
                 this.goldSound.play();
                 this.notification = 'You open a chest and find ' + collectable.value + ' gold!';
                 collectable.lifespan = 1000;
-                this.player.scale.setTo(4) //    this.player.scale +1  )
-
+               // console.log("about to grow")
+                //console.log("growing to" + this.howBig+2);
+                //this.player.scale.setTo(6);    
+                this.howBig +=  (0.2)/(Math.sqrt(this.howBig)) ;
+                this.player.scale.setTo(this.howBig);
             } else if (collectable.name === 'healthPotion') {
                 player.health += collectable.value;
                 this.notification = 'You consume a potion, healing you for ' + collectable.value + ' health.';
