@@ -35,7 +35,7 @@ Theodoric.Game.prototype = {
     create: function () {
 
         // Generate in order of back to front
-        var worldSize = 1920;
+        var worldSize = 3840; // 1920;
         this.game.world.setBounds(0, 0, worldSize, worldSize);
 
         this.background = this.game.add.tileSprite(0, 0, this.game.world.width / 2, this.game.world.height / 2, 'tiles', 65);
@@ -46,6 +46,7 @@ Theodoric.Game.prototype = {
         // Initialize data
         this.notification = '';
         this.spellCooldown = 0;
+        this.taxCooldown = 0;
         this.gold = 0;
         this.xp = 0;
         this.howBig = 2;
@@ -131,6 +132,14 @@ Theodoric.Game.prototype = {
               //  this.playerAttacks.range = this.player.strength * 3;
               //  this.attack(this.player, this.playerAttacks);
             }
+            if(this.game.time.now > this.taxCooldown){
+                this.taxCooldown = this.game.time.now + 1000;
+                if(this.gold > 0){
+                    this.gold = this.gold - 1;
+                }
+                
+            }
+
 
             // Use spell when spacebar is pressed
             if (this.game.time.now > this.spellCooldown) {
@@ -165,7 +174,12 @@ Theodoric.Game.prototype = {
 
         this.enemies.forEachAlive(function(enemy) {
             if (enemy.visible && enemy.inCamera) {
-                this.game.physics.arcade.moveFromObject(enemy, this.player, enemy.speed)
+                if(enemy.name == 'Spider' &&  this.gold == 0){
+                    this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
+                }
+                else{
+                 this.game.physics.arcade.moveFromObject(enemy, this.player, enemy.speed)
+                }
                 this.enemyMovementHandler(enemy);
             }
 
@@ -614,7 +628,7 @@ Theodoric.Game.prototype = {
     },
 
     generateSpider: function (enemy) {
-
+          ///taxman
         enemy.animations.add('down', [57, 58, 59], 10, true);
         enemy.animations.add('left', [69, 70, 71], 10, true);
         enemy.animations.add('right', [81, 82, 83], 10, true);
@@ -679,7 +693,7 @@ Theodoric.Game.prototype = {
         this.obstacles = this.game.add.group();
         this.obstacles.enableBody = true;
 
-        var amount = 300;
+        var amount = 100;
         for (var i = 0; i < amount; i++) {
             var point = this.getRandomLocation();
             var spriteIndex = Math.floor(Math.random() * 10);
