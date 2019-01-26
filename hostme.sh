@@ -1,2 +1,2 @@
 python3 -m http.server&
-Google\ Chrome http://localhost:8000
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome http://localhost:8000
