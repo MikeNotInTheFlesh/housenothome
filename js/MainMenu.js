@@ -1,6 +1,6 @@
-Theodoric.MainMenu = function (game) {};
+HouseNotHome.MainMenu = function (game) {};
 
-Theodoric.MainMenu.prototype = {
+HouseNotHome.MainMenu.prototype = {
 
     init: function(score) {
 

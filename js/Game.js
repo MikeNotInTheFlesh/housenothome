@@ -4,7 +4,7 @@
 // http://jschomay.tumblr.com/post/103568304133/tutorial-building-a-polished-html5-space-shooter
 // http://ezelia.com/2014/tutorial-creating-basic-multiplayer-game-phaser-eureca-io
 
-Theodoric.Game = function (game) {
+HouseNotHome.Game = function (game) {
 
     //  When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -29,7 +29,7 @@ Theodoric.Game = function (game) {
     //  But do consider them as being 'reserved words', i.e. don't create a property for your own game called 'world' or you'll over-write the world reference.
 };
 
-Theodoric.Game.prototype = {
+HouseNotHome.Game.prototype = {
 
     // Runs once at start of game
     create: function () {
@@ -542,7 +542,7 @@ Theodoric.Game.prototype = {
        // influence.body.collideWorldBounds = false
        // this.game.physics.arcade.enable(influence);
 
-        player.name = 'Theodoric';
+        player.name = 'House';
         player.level = 1;
 
         player.health = 100;
