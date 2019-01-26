@@ -1,0 +1,4 @@
+
+
+How to resize the images:
+convert -background none -resize 16x16 house.jpg housepng.png

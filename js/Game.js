@@ -124,12 +124,12 @@ Theodoric.Game.prototype = {
 
             // Attack towards mouse click
             if (this.game.input.activePointer.isDown) {
-                this.playerAttacks.rate = 1000 - (this.player.speed * 4);
-                    if (this.playerAttacks.rate < 200) {
-                        this.playerAttacks.rate = 200;
-                    }
-                this.playerAttacks.range = this.player.strength * 3;
-                this.attack(this.player, this.playerAttacks);
+              //  this.playerAttacks.rate = 1000 - (this.player.speed * 4);
+               //     if (this.playerAttacks.rate < 200) {
+               //         this.playerAttacks.rate = 200;
+                //    }
+              //  this.playerAttacks.range = this.player.strength * 3;
+              //  this.attack(this.player, this.playerAttacks);
             }
 
             // Use spell when spacebar is pressed
