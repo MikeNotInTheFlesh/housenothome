@@ -182,20 +182,24 @@ HouseNotHome.Game.prototype = {
 
         this.enemies.forEachAlive(function(enemy) {
             if (enemy.visible && enemy.inCamera) {
-                if(enemy.name == 'Spider' &&  this.gold <= 0){
-                  // Spiders are still moving away after gold <= 0...    WRONG
-                    this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
-                } else if(enemy.name == 'Child' && this.hasPlayground){
-                    if(!this.hasChildren){
+                if(enemy.name == 'Spider' &&  this.gold == 0){
+                    this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed);
+
+                } else if  //parent -> playground -> child -> grandparent -> pet
+                    (  (enemy.name == 'Parent') //no prereq
+                        //playground location is taken care of in collect() function
+                    || (enemy.name == 'Child' && this.hasPlayground)
+                    || (enemy.name == 'Grandparent' && this.hasParents)
+                    || (enemy.name == 'Pet' && this.hasGrandparents)
+                    )
+                {   
+                    if(!enemy.collected) { //if this house-item has not been collected yet
                         this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
-                    } else {
-                        //collectable.collected && (collectable.name === 'playground' || collectable.name === 'Child')
+                    } else { //this house-item has been collected already. display with player at clump-location
                         enemy.position.x = this.player.position.x + enemy.xdiff;
                         enemy.position.y = this.player.position.y + enemy.ydiff;
-                        //enemy.position.x = this.player.position.x - 20;
-                        //enemy.position.y = this.player.position.y;
-                        // enemy.speed = 5000;
-                        }
+                        enemy.speed = 0;
+                    }
                 } else {
                  this.game.physics.arcade.moveFromObject(enemy, this.player, enemy.speed)
                 }
@@ -430,25 +434,38 @@ HouseNotHome.Game.prototype = {
 
     collect: function(player, collectable) {
         collectable.health = 0;
-        if(collectable.collected && collectable.name === 'playground' && this.hasParents){
-            collectable.position.x = this.player.position.x - 20;
-            collectable.position.y = this.player.position.y;
-        } else if (collectable.collected && collectable.name == "Child" && this.hasPlayground){
-          collectable.position.x = this.player.position.x - 20;
-          collectable.position.y = this.player.position.y;
-        } else if (collectable.collected && collectable.name == "Parent"){
-          collectable.position.x = this.player.position.x;
-          collectable.position.y = this.player.position.y;
-        } else if (collectable.collected && collectable.name == "Grandparent" && this.hasChildren){
-          collectable.position.x = this.player.position.x;
-          collectable.position.y = this.player.position.y + 20;
-        } else if (collectable.collected && collectable.name == "Pet" && this.hasGrandparents){
-          collectable.position.x = this.player.position.x + 20;
-          collectable.position.y = this.player.position.y;
+
+        //this section is needed since playground isn't handled in enemyHandler
+        if (collectable.collected && collectable.name === 'playground') {
+            collectable.position.x = this.player.position.x + collectable.xdiff;
+            collectable.position.y = this.player.position.y + collectable.ydiff;
         }
 
-        if (!collectable.collected) {
+        //only allow 'collected=true' if prerequisite is satisfied, otherwise do nothing
+        var hasPrerequisite = true;
+        //parent has no prereq
+        if ((collectable.name == 'playground' && !this.hasParents) //playground-chest needs slime-parents
+        ||  (collectable.name == 'Child' && !this.hasPlayground) //child-bat needs playground
+        ||  (collectable.name == 'Grandparent' && !this.hasChildren) //grandparent-skeleton needs child-bat
+        ||  (collectable.name == 'Pet' && !this.hasGrandparents)) { //ghost-pet needs grandparent-skeleton
+            hasPrerequisite = false;
+        }
+
+        //this should only be called once per object, the first time you collect while having any prereq
+        if (!collectable.collected && hasPrerequisite) {
             collectable.collected = true;
+
+            //if is House-item-prequisite, set xydiff for House-clump-cluster-positioning
+            if (collectable.name == 'playground'
+                || collectable.name == 'Parent'
+                || collectable.name == 'Child'
+                || collectable.name == 'Grandparent'
+                || collectable.name == 'Pet')
+            {
+                collectable.xdiff =  (collectable.position.x - this.player.position.x) * 0.5;
+                collectable.ydiff =  (collectable.position.y - this.player.position.y) * 0.5;
+                collectable.speed = 0;
+            }
 
             var gain;
             if (collectable.name === 'gold') {
@@ -458,47 +475,29 @@ HouseNotHome.Game.prototype = {
                 this.notification = 'You pick up ' + collectable.value + ' gold.';
                 collectable.destroy();
             }
-            else if (collectable.name === 'playground' && this.hasParents) {
-                if (this.hasPlayground) {
-                  this.gold += collectable.value;
-                    this.destory;
-                }
+            else if (collectable.name === 'playground') { //prereq is assumed from earlier prereq-check
                 this.hasPlayground = true;
-                //this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
-                //this.enemyMovementHandler(collectable);
-              //  collectable.position.x = this.player.position.x - 20;
-               // collectable.position.y = this.player.position.y;
+                //this.gold -= collectable.value;
             }
-            else if (  collectable.name === 'Child' && this.hasPlayground){
-                //collectable.speed = 1000;
-                //this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
-                //this.enemyMovementHandler(collectable);
+            else if ( collectable.name === 'Child'){ //} && this.hasPlayground){ //prereq is assumed from earlier prereq-check
                 this.hasChildren = true;
-                this.gold += collectable.value;
-                collectable.position.x = this.player.position.x - 20;
-                collectable.position.y = this.player.position.y;
-
-            } else if (  collectable.name === 'Parent'){
+                //this.gold -= collectable.value;
+            } else if ( collectable.name === 'Parent') { //no-prereq is assumed from earlier prereq-check
                 this.hasParents = true;
-                collectable.position.x = this.player.position.x;
-                collectable.position.y = this.player.position.y;
-                this.gold += collectable.value;
-            } else if (  collectable.name === 'Grandparent' && this.hasChildren){
+                //this.gold -= collectable.value;
+            } else if ( collectable.name === 'Grandparent') { //child-prereq is assumed from earlier prereq-check
                 this.hasGrandparents = true;
-                collectable.position.x = this.player.position.x;
-                collectable.position.y = this.player.position.y + 20;
-                this.gold += collectable.value;
-            } else if (  collectable.name === 'Pet' && this.hasGrandparents){
-                //this.hasPets = true; // This doesn't exist yet
-                collectable.position.x = this.player.position.x + 20;
-                collectable.position.y = this.player.position.y;
-                this.gold += collectable.value;
+                //this.gold -= collectable.value;
+            } else if ( collectable.name === 'Pet') { //grandparent-prereq is assumed from earlier prereq-check
+                //this.hasPet = true;
+                //this.gold -= collectable.value;
+            /////////////////////////////////////
             } else if (  collectable.name === 'Kidnapper' && this.hasPlayground){
                 this.hasChildren = false;
                 // The child should be destroyed here, but I don't know how...
                 // this.enemies.forEachDead(destroyIfDead(enemy));
                 //for (let child in children//////////////////////////////////////////////////////)
-                this.gold -= collectable.value;
+                //this.gold -= collectable.value;
             } else if (  collectable.name === 'Spider'){
                 //this.hasPets = true; // This doesn't exist yet
                 this.gameOver();
