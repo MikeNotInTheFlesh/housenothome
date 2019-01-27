@@ -431,35 +431,24 @@ HouseNotHome.Game.prototype = {
     collect: function(player, collectable) {
         collectable.health = 0;
         if(collectable.collected && collectable.name === 'playground' && this.hasParents){
-            collectable.position.x = this.player.position.x + collectable.xdiff;
-                collectable.position.y = this.player.position.y + collectable.ydiff;
-            //collectable.position.x = this.player.position.x - 20;
-            //collectable.position.y = this.player.position.y;
+            collectable.position.x = this.player.position.x - 20;
+            collectable.position.y = this.player.position.y;
         } else if (collectable.collected && collectable.name == "Child" && this.hasPlayground){
-            collectable.position.x = this.player.position.x + collectable.xdiff;
-            collectable.position.y = this.player.position.y + collectable.ydiff;
-            //collectable.position.x = this.player.position.x - 20;
-          //collectable.position.y = this.player.position.y;
+          collectable.position.x = this.player.position.x - 20;
+          collectable.position.y = this.player.position.y;
         } else if (collectable.collected && collectable.name == "Parent"){
           collectable.position.x = this.player.position.x;
           collectable.position.y = this.player.position.y;
         } else if (collectable.collected && collectable.name == "Grandparent" && this.hasChildren){
-            collectable.position.x = this.player.position.x + collectable.xdiff;
-            collectable.position.y = this.player.position.y + collectable.ydiff;
-            //collectable.position.x = this.player.position.x;
-          //collectable.position.y = this.player.position.y + 20;
+          collectable.position.x = this.player.position.x;
+          collectable.position.y = this.player.position.y + 20;
         } else if (collectable.collected && collectable.name == "Pet" && this.hasGrandparents){
-            collectable.position.x = this.player.position.x + collectable.xdiff;
-            collectable.position.y = this.player.position.y + collectable.ydiff;
-            //collectable.position.x = this.player.position.x + 20;
-          //collectable.position.y = this.player.position.y;
+          collectable.position.x = this.player.position.x + 20;
+          collectable.position.y = this.player.position.y;
         }
 
         if (!collectable.collected) {
             collectable.collected = true;
-            collectable.xdiff = -0.5 * (this.player.position.x - collectable.position.x);
-            collectable.ydiff = -0.5 * (this.player.position.y - collectable.position.y);
-
 
             var gain;
             if (collectable.name === 'gold') {
@@ -486,31 +475,23 @@ HouseNotHome.Game.prototype = {
                 //this.enemyMovementHandler(collectable);
                 this.hasChildren = true;
                 this.gold += collectable.value;
-                collectable.position.x = this.player.position.x + collectable.xdiff;
-                collectable.position.y = this.player.position.y + collectable.ydiff;
-                //collectable.position.x = this.player.position.x - 20;
-                //collectable.position.y = this.player.position.y;
+                collectable.position.x = this.player.position.x - 20;
+                collectable.position.y = this.player.position.y;
 
             } else if (  collectable.name === 'Parent'){
                 this.hasParents = true;
-                collectable.position.x = this.player.position.x + collectable.xdiff;
-                collectable.position.y = this.player.position.y + collectable.ydiff;
-               // collectable.position.x = this.player.position.x;
-               // collectable.position.y = this.player.position.y;
+                collectable.position.x = this.player.position.x;
+                collectable.position.y = this.player.position.y;
                 this.gold += collectable.value;
             } else if (  collectable.name === 'Grandparent' && this.hasChildren){
                 this.hasGrandparents = true;
-                //collectable.position.x = this.player.position.x;
-                //collectable.position.y = this.player.position.y + 20;
-                collectable.position.x = this.player.position.x + collectable.xdiff;
-                collectable.position.y = this.player.position.y + collectable.ydiff;
+                collectable.position.x = this.player.position.x;
+                collectable.position.y = this.player.position.y + 20;
                 this.gold += collectable.value;
             } else if (  collectable.name === 'Pet' && this.hasGrandparents){
                 //this.hasPets = true; // This doesn't exist yet
-                collectable.position.x = this.player.position.x + collectable.xdiff;
-                collectable.position.y = this.player.position.y + collectable.ydiff;
-                //collectable.position.x = this.player.position.x + 20;
-                //collectable.position.y = this.player.position.y;
+                collectable.position.x = this.player.position.x + 20;
+                collectable.position.y = this.player.position.y;
                 this.gold += collectable.value;
             } else if (  collectable.name === 'Kidnapper' && this.hasPlayground){
                 this.hasChildren = false;
@@ -688,8 +669,8 @@ HouseNotHome.Game.prototype = {
         else if (rnd >= .3 && rnd < .4) enemy = this.generateSlime(enemy);
         else if (rnd >= .4 && rnd < .6) enemy = this.generateBat(enemy);
         else if (rnd >= .6 && rnd < .7) enemy = this.generateGhost(enemy);
-        else if (rnd >= .7 && rnd < .85) enemy = this.generateSpider(enemy);
-        else if (rnd >= .85 && rnd < 1) enemy = this.generateKidnapper(enemy);
+        else if (rnd >= .7 && rnd < .75) enemy = this.generateSpider(enemy);
+        else if (rnd >= .75 && rnd < 1) enemy = this.generateKidnapper(enemy);
 
         console.log('Generated ' + enemy.name + ' with ' + enemy.health + ' health, ' + enemy.strength + ' strength, and ' + enemy.speed + ' speed.');
 
