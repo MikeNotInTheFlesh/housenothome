@@ -44,7 +44,7 @@ HouseNotHome.Game.prototype = {
         this.generateGrid(worldSize);
 
         // Initialize data
-        this.notification = '';
+        this.notification = 'Find a yellow adult to be your resident!';
         this.spellCooldown = 0;
         this.taxCooldown = 0;
         this.gold = 0;
@@ -186,12 +186,19 @@ HouseNotHome.Game.prototype = {
                 if(enemy.name == 'Spider' &&  this.gold <= 0){
                     this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed);
 
-                } else if  //parent -> playground -> child -> grandparent -> pet
+                //} else if  //parent -> playground -> child -> grandparent -> pet
+                //    (  (enemy.name == 'Parent') //no prereq
+                //        //playground location is taken care of in collect() function
+                //    || (enemy.name == 'Child' && this.hasPlayground)
+                //    || (enemy.name == 'Grandparent' && this.hasParents)
+                //    || (enemy.name == 'Pet' && this.hasGrandparents)
+                //    )
+                } else if  //parent -> grandparent -> pet -> child
                     (  (enemy.name == 'Parent') //no prereq
                         //playground location is taken care of in collect() function
-                    || (enemy.name == 'Child' && this.hasPlayground)
                     || (enemy.name == 'Grandparent' && this.hasParents)
                     || (enemy.name == 'Pet' && this.hasGrandparents)
+                    || (enemy.name == 'Child' && this.hasPet)
                     )
                 {
                     if(!enemy.collected) { //if this house-item has not been collected yet
@@ -445,10 +452,19 @@ HouseNotHome.Game.prototype = {
         //only allow 'collected=true' if prerequisite is satisfied, otherwise do nothing
         var hasPrerequisite = true;
         //parent has no prereq
-        if ((collectable.name == 'playground' && !this.hasParents) //playground-chest needs slime-parents
-        ||  (collectable.name == 'Child' && !this.hasPlayground) //child-bat needs playground
-        ||  (collectable.name == 'Grandparent' && !this.hasChildren) //grandparent-skeleton needs child-bat
-        ||  (collectable.name == 'Pet' && !this.hasGrandparents)) { //ghost-pet needs grandparent-skeleton
+        //if ((collectable.name == 'playground' && !this.hasParents) //playground-chest needs slime-parents
+        //||  (collectable.name == 'Child' && !this.hasPlayground) //child-bat needs playground
+        //||  (collectable.name == 'Grandparent' && !this.hasChildren) //grandparent-skeleton needs child-bat
+        //||  (collectable.name == 'Pet' && !this.hasGrandparents)) { //ghost-pet needs grandparent-skeleton
+        //    hasPrerequisite = false;
+        //}
+        // Parent -> Grandparent -> Pet -> Child
+        if (
+            (collectable.name == 'Grandparent' && !this.hasParents) 
+        ||  (collectable.name == 'Pet' && !this.hasGrandparents)
+        ||  (collectable.name == 'Child' && !this.hasPet)
+        )  
+        { 
             hasPrerequisite = false;
         }
 
@@ -482,6 +498,7 @@ HouseNotHome.Game.prototype = {
             }
             else if ( collectable.name === 'Child'){ //} && this.hasPlayground){ //prereq is assumed from earlier prereq-check
                 this.hasChildren = true;
+                this.gameOver();
                 //this.gold -= collectable.value;
             } else if ( collectable.name === 'Parent') { //no-prereq is assumed from earlier prereq-check
                 this.hasParents = true;
@@ -490,7 +507,7 @@ HouseNotHome.Game.prototype = {
                 this.hasGrandparents = true;
                 //this.gold -= collectable.value;
             } else if ( collectable.name === 'Pet') { //grandparent-prereq is assumed from earlier prereq-check
-                //this.hasPet = true;
+                this.hasPet = true;
                 //this.gold -= collectable.value;
             /////////////////////////////////////
             } else if (  collectable.name === 'Kidnapper' ){ //&& this.hasPlayground
@@ -873,10 +890,10 @@ HouseNotHome.Game.prototype = {
             var point = this.getRandomLocation();
             this.generateChest(point);
         }
-        for (var i = 0; i < amount; i++) {
-            var point = this.getRandomLocation();
-            this.generatePlayground(point);
-        }
+        //for (var i = 0; i < amount; i++) {
+        //    var point = this.getRandomLocation();
+        //    this.generatePlayground(point);
+        //}
 
 
     },
@@ -1157,6 +1174,11 @@ HouseNotHome.Game.prototype = {
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
 
         //  Then let's go back to the main menu.
+        if (this.hasChildren) {
+            HouseNotHome.MainMenu.isWinner = true;
+        } else {
+            HouseNotHome.MainMenu.isWinner = false;
+        }
         this.game.state.start('MainMenu', true, false, this.xp + this.gold);
     },
 

@@ -4,7 +4,8 @@ HouseNotHome.MainMenu.prototype = {
 
     init: function(score) {
 
-        var score = score || 0;
+		var score = score || 0;
+		this.isWinner = this.isWinner || 0;
         this.isGameOver = this.isGameOver || 0;
         this.highestScore = this.highestScore || 0;
         this.highestScore = Math.max(score, this.highestScore);
@@ -36,10 +37,13 @@ HouseNotHome.MainMenu.prototype = {
         this.score.anchor.set(0.5);
 
         // Game Over
-        if (HouseNotHome.MainMenu.isGameOver){
-          text = "Game Over";
-        } else { text = ""}
-          style = { font: "90px Arial", fill: "#FF0000", align: "center" };
+        if (HouseNotHome.MainMenu.isGameOver && HouseNotHome.MainMenu.isWinner == true){
+		  text = "You're now a Home!!";
+		} else if (HouseNotHome.MainMenu.isGameOver) {
+		  text = "Game Over";
+		} else { text = ""}
+		
+		style = { font: "90px Arial", fill: "#FFFF00", align: "center" };
 
         this.gameOver = this.game.add.text(this.game.width/2, this.game.height / 6, text, style);
         this.gameOver.anchor.set(0.5);
