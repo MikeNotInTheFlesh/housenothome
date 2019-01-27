@@ -487,6 +487,12 @@ HouseNotHome.Game.prototype = {
                 collectable.position.x = this.player.position.x + 20;
                 collectable.position.y = this.player.position.y;
                 this.gold += collectable.value;
+            } else if (  collectable.name === 'Kidnapper' && this.hasChildren){
+                //this.hasPets = true; // This doesn't exist yet
+                this.hasChildren = false;
+                // this.enemies.forEachDead(destroyIfDead(enemy));
+                //for (let child in children//////////////////////////////////////////////////////)
+                this.gold -= collectable.value;
             } else if (collectable.name === 'chest') {
                 collectable.animations.play('open');
                 this.gold += collectable.value;
@@ -654,7 +660,8 @@ HouseNotHome.Game.prototype = {
         else if (rnd >= .3 && rnd < .4) enemy = this.generateSlime(enemy);
         else if (rnd >= .4 && rnd < .6) enemy = this.generateBat(enemy);
         else if (rnd >= .6 && rnd < .7) enemy = this.generateGhost(enemy);
-        else if (rnd >= .7 && rnd < 1) enemy = this.generateSpider(enemy);
+        else if (rnd >= .7 && rnd < .85) enemy = this.generateSpider(enemy);
+        else if (rnd >= .85 && rnd < 1) enemy = this.generateKidnapper(enemy);
 
         console.log('Generated ' + enemy.name + ' with ' + enemy.health + ' health, ' + enemy.strength + ' strength, and ' + enemy.speed + ' speed.');
 
@@ -717,6 +724,19 @@ HouseNotHome.Game.prototype = {
         enemy.value = 6;
         return this.setStats(enemy, 'Spider', 50, 5, 12, 4, 10);
     },
+
+    generateKidnapper: function (enemy) {
+          ///taxman
+        enemy.animations.add('down', [0, 1, 2], 10, true);
+        enemy.animations.add('left', [12, 13, 14], 10, true);
+        enemy.animations.add('right', [24, 25, 26], 10, true);
+        enemy.animations.add('up', [36, 37, 38], 10, true);
+        enemy.howBig = 4;
+        enemy.value = 6;
+        return this.setStats(enemy, 'Kidnapper', 50, 5, 12, 4, 10);
+    },
+
+
 
     generateDragon: function (colorIndex) {
 
@@ -1186,4 +1206,10 @@ HouseNotHome.Game.prototype = {
 
        return array;
     }
+
+    // destroyIfDead: function (collectable){
+    //   if (!collectable.alive){
+    //     collectable.destroy();
+    //   }
+    // }
 };
