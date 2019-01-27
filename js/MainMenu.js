@@ -5,6 +5,7 @@ HouseNotHome.MainMenu.prototype = {
     init: function(score) {
 
         var score = score || 0;
+        this.isGameOver = this.isGameOver || 0;
         this.highestScore = this.highestScore || 0;
         this.highestScore = Math.max(score, this.highestScore);
     },
@@ -17,7 +18,7 @@ HouseNotHome.MainMenu.prototype = {
 
 		this.music = this.add.audio('openingMusic');
 		this.music.loop = true;
-		this.music.play();
+		// this.music.play();
 
 		this.background = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'tiles', 92);
 
@@ -33,6 +34,15 @@ HouseNotHome.MainMenu.prototype = {
 
         this.score = this.game.add.text(this.game.width/2, this.game.height - 50, text, style);
         this.score.anchor.set(0.5);
+
+        // Game Over
+        if (HouseNotHome.MainMenu.isGameOver){
+          text = "Game Over";
+        } else { text = ""}
+          style = { font: "90px Arial", fill: "#FF0000", align: "center" };
+
+        this.gameOver = this.game.add.text(this.game.width/2, this.game.height / 6, text, style);
+        this.gameOver.anchor.set(0.5);
 
         // Instructions
         text = "Move: WASD Keys   Attack: Hold Left-Mouse Button   Spell: Spacebar";
@@ -52,7 +62,7 @@ HouseNotHome.MainMenu.prototype = {
 	startGame: function (pointer) {
 
 		// Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
-		this.music.stop();
+		// this.music.stop();
 
 		// And start the actual game
 		this.state.start('Game');
