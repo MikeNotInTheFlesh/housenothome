@@ -1129,17 +1129,17 @@ HouseNotHome.Game.prototype = {
         this.playerAttacks.destroy();
         this.enemies.destroy();
 
-		this.music.stop();
-		this.music.destroy();
+		// this.music.stop();
+		// this.music.destroy();
 
-        this.attackSound.destroy();
-        this.playerSound.destroy();
-        this.skeletonSound.destroy();
-        this.slimeSound.destroy();
-        this.batSound.destroy();
-        this.ghostSound.destroy();
-        this.spiderSound.destroy();
-        this.goldSound.destroy();
+        // this.attackSound.destroy();
+        // this.playerSound.destroy();
+        // this.skeletonSound.destroy();
+        // this.slimeSound.destroy();
+        // this.batSound.destroy();
+        // this.ghostSound.destroy();
+        // this.spiderSound.destroy();
+        // this.goldSound.destroy();
 
         //  Here you should destroy anything you no longer need.
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
@@ -1152,7 +1152,7 @@ HouseNotHome.Game.prototype = {
 
         //  Here you should destroy anything you no longer need.
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
-		this.music.stop();
+		// this.music.stop();
 
         //  Then let's go back to the main menu.
         this.game.state.start('MainMenu', true, false, this.xp + this.gold);

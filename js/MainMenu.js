@@ -18,7 +18,7 @@ HouseNotHome.MainMenu.prototype = {
 
 		this.music = this.add.audio('openingMusic');
 		this.music.loop = true;
-		this.music.play();
+		// this.music.play();
 
 		this.background = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'tiles', 92);
 
@@ -62,7 +62,7 @@ HouseNotHome.MainMenu.prototype = {
 	startGame: function (pointer) {
 
 		// Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
-		this.music.stop();
+		// this.music.stop();
 
 		// And start the actual game
 		this.state.start('Game');
