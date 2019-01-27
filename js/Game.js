@@ -82,9 +82,9 @@ HouseNotHome.Game.prototype = {
         this.bosses.physicsBodyType = Phaser.Physics.ARCADE;
 
         // Music
-		this.music = this.game.add.audio('overworldMusic');
-		this.music.loop = true;
-		this.music.play();
+		// this.music = this.game.add.audio('overworldMusic');
+		// this.music.loop = true;
+		// this.music.play();
 
         // Sound effects
         this.generateSounds();
@@ -228,7 +228,7 @@ HouseNotHome.Game.prototype = {
             this.bossSpawned = true;
             this.goldForBoss += 5000;
             var boss = this.generateDragon(this.bossColorIndex);
-            this.dragonSound.play();
+            // this.dragonSound.play();
             this.notification = 'A ' + boss.name + ' appeared!';
         }
 
@@ -336,7 +336,7 @@ HouseNotHome.Game.prototype = {
         this.xp -= this.xpToNext;
         this.xpToNext = Math.floor(this.xpToNext * 1.1);
         this.notification = this.player.name + ' has advanced to level ' + this.player.level + '!';
-        this.levelSound.play();
+        // this.levelSound.play();
         var emitter = this.game.add.emitter(this.player.x, this.player.y, 100);
         emitter.makeParticles('levelParticle');
         emitter.minParticleSpeed.setTo(-200, -200);
@@ -358,15 +358,15 @@ HouseNotHome.Game.prototype = {
             console.log(attacker.name + " used " + attacks.name + "!");
             if (attacks.name === 'sword') {
                 a.rotation = this.game.physics.arcade.moveToPointer(a, attacks.range);
-                this.attackSound.play();
+                // this.attackSound.play();
             } else if (attacks.name === 'spell') {
                 a.rotation = this.game.physics.arcade.moveToPointer(a, attacks.range);
                 a.effect = 'spell';
                 a.strength *= 3;
-                this.fireballSound.play();
+                // this.fireballSound.play();
             } else if (attacks.name === 'fireball') {
                 a.rotation = this.game.physics.arcade.moveToObject(a, this.player, attacks.range);
-                this.fireballSound.play();
+                // this.fireballSound.play();
             }
         }
     },
@@ -471,7 +471,7 @@ HouseNotHome.Game.prototype = {
             if (collectable.name === 'gold') {
                 gain = this.player.level + Math.floor(Math.random() * 10);
                 this.gold += collectable.value;
-                this.goldSound.play();
+                // this.goldSound.play();
                 this.notification = 'You pick up ' + collectable.value + ' gold.';
                 collectable.destroy();
             }
@@ -504,7 +504,7 @@ HouseNotHome.Game.prototype = {
             } else if (collectable.name === 'chest') {
                 collectable.animations.play('open');
                 this.gold += collectable.value;
-                this.goldSound.play();
+                // this.goldSound.play();
                 this.notification = 'You open a chest and find ' + collectable.value + ' gold!';
                 collectable.lifespan = 1000;
                // console.log("about to grow")
@@ -515,22 +515,22 @@ HouseNotHome.Game.prototype = {
             } else if (collectable.name === 'healthPotion') {
                 player.health += collectable.value;
                 this.notification = 'You consume a potion, healing you for ' + collectable.value + ' health.';
-                this.potionSound.play();
+                // this.potionSound.play();
                 collectable.destroy();
             } else if (collectable.name === 'vitalityPotion') {
                 player.vitality += collectable.value;
                 this.notification = 'You consume a potion, increasing your vitality by ' + collectable.value + '!';
-                this.potionSound.play();
+                // this.potionSound.play();
                 collectable.destroy();
             } else if (collectable.name === 'strengthPotion') {
                 player.strength += collectable.value;
                 this.notification = 'You consume a potion, increasing your strength by ' + collectable.value + '!';
-                this.potionSound.play();
+                // this.potionSound.play();
                 collectable.destroy();
             } else if (collectable.name === 'speedPotion') {
                 player.speed += collectable.value;
                 this.notification = 'You consume a potion, increasing your speed by  ' + collectable.value + '!';
-                this.potionSound.play();
+                // this.potionSound.play();
                 collectable.destroy();
             }
             else{ //enemies
@@ -963,7 +963,7 @@ HouseNotHome.Game.prototype = {
     },
 
     playSound: function (name) {
-
+        return; // TURNING ALL SOUND OFF
         if (name === this.player.name) {
             this.playerSound.play();
 
