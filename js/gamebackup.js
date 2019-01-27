@@ -186,18 +186,11 @@ HouseNotHome.Game.prototype = {
                     this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
                 } else if(enemy.name == 'Bat' && this.hasPlayground){
 
-
-
-
                     if(!this.hasChildren){
                         this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
                     } else {
-
-                        //collectable.collected && (collectable.name === 'playground' || collectable.name === 'bat')
-                        enemy.position.x = this.player.position.x + enemy.xdiff;
-                        enemy.position.y = this.player.position.y + enemy.ydiff;
-                        //enemy.position.x = this.player.position.x - 20;
-                        //enemy.position.y = this.player.position.y;
+                        enemy.position.x = this.player.position.x - 20;
+                        enemy.position.y = this.player.position.y;
                         enemy.speed = 0;
                         }
                 } else {
@@ -467,8 +460,8 @@ HouseNotHome.Game.prototype = {
                 this.hasPlayground = true;
                 //this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
                 //this.enemyMovementHandler(collectable);
-              //  collectable.position.x = this.player.position.x - 20;
-               // collectable.position.y = this.player.position.y;
+                collectable.position.x = this.player.position.x - 20;
+                collectable.position.y = this.player.position.y;
             }
             else if (  collectable.name === 'Bat' && this.hasParents && this.hasPlayground){
                 //collectable.speed = 1000;
