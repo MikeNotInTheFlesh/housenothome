@@ -425,15 +425,17 @@ HouseNotHome.Game.prototype = {
 
     collect: function(player, collectable) {
         collectable.health = 0;
-        if(collectable.collected && (collectable.name === 'playground' || collectable.name === 'bat')){
+        if(collectable.collected && (collectable.name === 'playground'
+          || collectable.name === 'bat')
+          && this.hasParents){
             collectable.position.x = this.player.position.x - 20;
             collectable.position.y = this.player.position.y;
-        } else if (collectable.collected && collectable.name == "Slime" && this.hasChildren){
+        } else if (collectable.collected && collectable.name == "Slime"){
           collectable.position.x = this.player.position.x;
           collectable.position.y = this.player.position.y;
-        } else if (collectable.collected && collectable.name == "Skeleton" && this.hasParents){
+        } else if (collectable.collected && collectable.name == "Skeleton" && this.hasChildren){
           collectable.position.x = this.player.position.x;
-          collectable.position.y = this.player.position.y;
+          collectable.position.y = this.player.position.y + 20;
         } else if (collectable.collected && collectable.name == "Ghost" && this.hasGrandparents){
           collectable.position.x = this.player.position.x + 20;
           collectable.position.y = this.player.position.y;
@@ -450,7 +452,7 @@ HouseNotHome.Game.prototype = {
                 this.notification = 'You pick up ' + collectable.value + ' gold.';
                 collectable.destroy();
             }
-            else if (collectable.name === 'playground' ) {
+            else if (collectable.name === 'playground' && this.hasParents) {
                 if (this.hasPlayground) {
                   this.gold += collectable.value;
                     this.destory;
@@ -461,7 +463,7 @@ HouseNotHome.Game.prototype = {
                 collectable.position.x = this.player.position.x - 20;
                 collectable.position.y = this.player.position.y;
             }
-            else if (  collectable.name === 'Bat'){
+            else if (  collectable.name === 'Bat' && this.hasParents && this.hasPlayground){
                 //collectable.speed = 1000;
                 //this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
                 //this.enemyMovementHandler(collectable);
@@ -470,15 +472,15 @@ HouseNotHome.Game.prototype = {
                 collectable.position.x = this.player.position.x - 20;
                 collectable.position.y = this.player.position.y;
 
-            } else if (  collectable.name === 'Slime' && this.hasChildren){
+            } else if (  collectable.name === 'Slime'){
                 this.hasParents = true;
                 collectable.position.x = this.player.position.x;
                 collectable.position.y = this.player.position.y;
                 this.gold += collectable.value;
-            } else if (  collectable.name === 'Skeleton' && this.hasParents){
+            } else if (  collectable.name === 'Skeleton' && this.hasChildren){
                 this.hasGrandparents = true;
                 collectable.position.x = this.player.position.x;
-                collectable.position.y = this.player.position.y;
+                collectable.position.y = this.player.position.y + 20;
                 this.gold += collectable.value;
             } else if (  collectable.name === 'Ghost' && this.hasGrandparents){
                 //this.hasPets = true; // This doesn't exist yet
