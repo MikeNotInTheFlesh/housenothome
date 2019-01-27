@@ -143,7 +143,7 @@ HouseNotHome.Game.prototype = {
             if(this.game.time.now > this.taxCooldown){
                 this.taxCooldown = this.game.time.now + 1000;
                 if(this.gold > 0){
-                    this.gold = this.gold - 1;
+                    this.gold = this.gold - 10;
                 }
 
             }
@@ -512,8 +512,8 @@ HouseNotHome.Game.prototype = {
                // console.log("about to grow")
                 //console.log("growing to" + this.howBig+2);
                 //this.player.scale.setTo(6);
-                this.howBig +=  (0.2)/(Math.sqrt(this.howBig)) ;
-                this.player.scale.setTo(this.howBig);
+                //this.howBig +=  (0.2)/(Math.sqrt(this.howBig)) ;
+                //this.player.scale.setTo(this.howBig);
             } else if (collectable.name === 'healthPotion') {
                 player.health += collectable.value;
                 this.notification = 'You consume a potion, healing you for ' + collectable.value + ' health.';
