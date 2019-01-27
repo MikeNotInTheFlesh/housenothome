@@ -493,8 +493,10 @@ HouseNotHome.Game.prototype = {
                 //this.hasPet = true;
                 //this.gold -= collectable.value;
             /////////////////////////////////////
-            } else if (  collectable.name === 'Kidnapper' && this.hasPlayground){
-                this.hasChildren = false;
+            } else if (  collectable.name === 'Kidnapper' ){ //&& this.hasPlayground
+                this.gold = 0;
+                collectable.destroy();
+                //this.hasChildren = false;
                 // The child should be destroyed here, but I don't know how...
                 // this.enemies.forEachDead(destroyIfDead(enemy));
                 //for (let child in children//////////////////////////////////////////////////////)
@@ -536,8 +538,8 @@ HouseNotHome.Game.prototype = {
                 collectable.destroy();
             }
             else{ //enemies
-                this.howBig +=  (0.2)/(Math.sqrt(this.howBig)) ;
-                this.player.scale.setTo(this.howBig);
+                //this.howBig +=  (0.2)/(Math.sqrt(this.howBig)) ;
+                //this.player.scale.setTo(this.howBig);
 
             }
 
