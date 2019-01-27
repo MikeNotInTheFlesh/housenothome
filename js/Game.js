@@ -182,23 +182,19 @@ HouseNotHome.Game.prototype = {
 
         this.enemies.forEachAlive(function(enemy) {
             if (enemy.visible && enemy.inCamera) {
-                if(enemy.name == 'Spider' &&  this.gold == 0){
+                if(enemy.name == 'Spider' &&  this.gold <= 0){
+                  // Spiders are still moving away after gold <= 0...    WRONG
                     this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
                 } else if(enemy.name == 'Child' && this.hasPlayground){
-
-
-
-
                     if(!this.hasChildren){
                         this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
                     } else {
-
                         //collectable.collected && (collectable.name === 'playground' || collectable.name === 'Child')
                         enemy.position.x = this.player.position.x + enemy.xdiff;
                         enemy.position.y = this.player.position.y + enemy.ydiff;
                         //enemy.position.x = this.player.position.x - 20;
                         //enemy.position.y = this.player.position.y;
-                        enemy.speed = 0;
+                        // enemy.speed = 5000;
                         }
                 } else {
                  this.game.physics.arcade.moveFromObject(enemy, this.player, enemy.speed)
@@ -503,6 +499,9 @@ HouseNotHome.Game.prototype = {
                 // this.enemies.forEachDead(destroyIfDead(enemy));
                 //for (let child in children//////////////////////////////////////////////////////)
                 this.gold -= collectable.value;
+            } else if (  collectable.name === 'Spider'){
+                //this.hasPets = true; // This doesn't exist yet
+                this.gameOver();
             } else if (collectable.name === 'chest') {
                 collectable.animations.play('open');
                 this.gold += collectable.value;
@@ -732,7 +731,7 @@ HouseNotHome.Game.prototype = {
         enemy.animations.add('up', [93, 94, 95], 10, true);
         enemy.howBig = 4;
         enemy.value = 6;
-        return this.setStats(enemy, 'Spider', 50, 5, 12, 4, 10);
+        return this.setStats(enemy, 'Spider', 50, 50, 12, 4, 10);
     },
 
     generateKidnapper: function (enemy) {
