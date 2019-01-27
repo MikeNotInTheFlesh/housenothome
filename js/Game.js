@@ -35,7 +35,7 @@ HouseNotHome.Game.prototype = {
     create: function () {
 
         // Generate in order of back to front
-        var worldSize = 3840; // 1920;
+        var worldSize = 1920; // 1920;
         this.game.world.setBounds(0, 0, worldSize, worldSize);
 
         this.background = this.game.add.tileSprite(0, 0, this.game.world.width / 2, this.game.world.height / 2, 'tiles', 65);
@@ -74,7 +74,7 @@ HouseNotHome.Game.prototype = {
         this.bossAttacks = this.generateAttacks('fireball', 1, 2000, 300);
 
         // Generate enemies - must be generated after player and player.level
-        this.generateEnemies(500);
+        this.generateEnemies(300);
 
         // Generate bosses
         this.bosses = this.game.add.group();
@@ -308,7 +308,7 @@ HouseNotHome.Game.prototype = {
        // this.xpLabel.fixedToCamera = true;
 
 
-         //complains when deleted 
+         //complains when deleted
        // style = { font: '20px Arial', fill: '#f00', align: 'center' };
        // this.healthLabel = this.game.add.text(225, this.game.height - 50, text, style);
        // this.healthLabel.fixedToCamera = true;
@@ -438,7 +438,7 @@ HouseNotHome.Game.prototype = {
             collectable.position.x = this.player.position.x - 20;
             collectable.position.y = this.player.position.y;
         } else if (collectable.collected && collectable.name == "Child" && this.hasPlayground){
-          collectable.position.x = this.player.position.x;
+          collectable.position.x = this.player.position.x - 20;
           collectable.position.y = this.player.position.y;
         } else if (collectable.collected && collectable.name == "Parent"){
           collectable.position.x = this.player.position.x;
