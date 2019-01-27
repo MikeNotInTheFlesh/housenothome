@@ -192,7 +192,7 @@ HouseNotHome.Game.prototype = {
                     || (enemy.name == 'Grandparent' && this.hasParents)
                     || (enemy.name == 'Pet' && this.hasGrandparents)
                     )
-                {   
+                {
                     if(!enemy.collected) { //if this house-item has not been collected yet
                         this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
                     } else { //this house-item has been collected already. display with player at clump-location
@@ -1121,6 +1121,7 @@ HouseNotHome.Game.prototype = {
 
     gameOver: function() {
 
+        HouseNotHome.MainMenu.isGameOver = true;
         this.background.destroy();
         this.corpses.destroy();
         this.collectables.destroy();
