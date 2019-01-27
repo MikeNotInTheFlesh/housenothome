@@ -115,10 +115,10 @@ HouseNotHome.Game.prototype = {
             collectable.destroy();
         });
 
-        this.notificationLabel.text = this.notification;
-        this.xpLabel.text = 'Lvl. ' + this.player.level + ' - ' + this.xp + ' XP / ' + this.xpToNext + ' XP';
+        //this.notificationLabel.text = this.notification;
+       // this.xpLabel.text = 'Lvl. ' + this.player.level + ' - ' + this.xp + ' XP / ' + this.xpToNext + ' XP';
         this.goldLabel.text = this.gold + ' Gold';
-        this.healthLabel.text = this.player.health + ' / ' + this.player.vitality;
+       // this.healthLabel.text = this.player.health + ' / ' + this.player.vitality;
         // if (this.hasPlayground == true) {
         //     this.itemLabel.text = 'Playground: Yes';
         // } else {
@@ -150,32 +150,32 @@ HouseNotHome.Game.prototype = {
 
 
             // Use spell when spacebar is pressed
-            if (this.game.time.now > this.spellCooldown) {
-            this.spellLabel.text = "READY!";
+            // if (this.game.time.now > this.spellCooldown) {
+            // this.spellLabel.text = "READY!";
 
-                if (this.controls.spell.isDown) {
-                    this.playerSpells.rate = 5000;
-                    this.playerSpells.range = this.player.strength * 6;
-                    this.attack(this.player, this.playerSpells);
-                    this.spellCooldown = this.game.time.now + 5000;
-                }
-            } else {
-                this.spellLabel.text = "RECHARGING...";
-            }
+            //     if (this.controls.spell.isDown) {
+            //         this.playerSpells.rate = 5000;
+            //         this.playerSpells.range = this.player.strength * 6;
+            //         this.attack(this.player, this.playerSpells);
+            //         this.spellCooldown = this.game.time.now + 5000;
+            //     }
+            // } else {
+            //     this.spellLabel.text = "RECHARGING...";
+            // }
 
-            if (this.player.health > this.player.vitality) {
-                this.player.health = this.player.vitality;
-            }
+            // if (this.player.health > this.player.vitality) {
+            //     this.player.health = this.player.vitality;
+            // }
 
-            if (this.xp >= this.xpToNext) {
-                this.levelUp();
-            }
+            // if (this.xp >= this.xpToNext) {
+            //     this.levelUp();
+            // }
         }
 
-        if (!this.player.alive) {
-            this.deathHandler(this.player);
-            this.game.time.events.add(1000, this.gameOver, this);
-        }
+      //  if (!this.player.alive) {
+       //     this.deathHandler(this.player);
+        //    this.game.time.events.add(1000, this.gameOver, this);
+       // }
     },
 
     enemyHandler: function() {
@@ -299,29 +299,31 @@ HouseNotHome.Game.prototype = {
     showLabels: function() {
 
         var text = '0';
-        style = { font: '10px Arial', fill: '#fff', align: 'center' };
-        this.notificationLabel = this.game.add.text(25, 25, text, style);
-        this.notificationLabel.fixedToCamera = true;
+       // style = { font: '10px Arial', fill: '#fff', align: 'center' };
+       // this.notificationLabel = this.game.add.text(25, 25, text, style);
+       // this.notificationLabel.fixedToCamera = true;
 
-        style = { font: '10px Arial', fill: '#ffd', align: 'center' };
-        this.xpLabel = this.game.add.text(25, this.game.height - 25, text, style);
-        this.xpLabel.fixedToCamera = true;
+     //   style = { font: '10px Arial', fill: '#ffd', align: 'center' };
+      //  this.xpLabel = this.game.add.text(25, this.game.height - 25, text, style);
+       // this.xpLabel.fixedToCamera = true;
 
-        style = { font: '20px Arial', fill: '#f00', align: 'center' };
-        this.healthLabel = this.game.add.text(225, this.game.height - 50, text, style);
-        this.healthLabel.fixedToCamera = true;
 
-        style = { font: '10px Arial', fill: '#ffd', align: 'center' };
-        this.itemLabel = this.game.add.text(125, this.game.height - 50, text, style);
-        this.itemLabel.fixedToCamera = true;
+         //complains when deleted 
+       // style = { font: '20px Arial', fill: '#f00', align: 'center' };
+       // this.healthLabel = this.game.add.text(225, this.game.height - 50, text, style);
+       // this.healthLabel.fixedToCamera = true;
+
+       // style = { font: '10px Arial', fill: '#ffd', align: 'center' };
+       // this.itemLabel = this.game.add.text(125, this.game.height - 50, text, style);
+        //this.itemLabel.fixedToCamera = true;
 
         var style = { font: '10px Arial', fill: '#fff', align: 'center' };
         this.goldLabel = this.game.add.text(this.game.width - 75, this.game.height - 25, text, style);
         this.goldLabel.fixedToCamera = true;
 
-        var style = { font: '10px Arial', fill: '#fff', align: 'center' };
-        this.spellLabel = this.game.add.text(230, this.game.height - 25, text, style);
-        this.spellLabel.fixedToCamera = true;
+       // var style = { font: '10px Arial', fill: '#fff', align: 'center' };
+       // this.spellLabel = this.game.add.text(230, this.game.height - 25, text, style);
+        //this.spellLabel.fixedToCamera = true;
     },
 
     levelUp: function() {
