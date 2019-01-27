@@ -33,7 +33,7 @@ HouseNotHome.Preloader.prototype = {
 
 		this.load.spritesheet('tiles', 'assets/images/tiles.png', 16, 16);
 		this.load.spritesheet('things', 'assets/images/things.png', 16, 16);
-		this.load.spritesheet('characters', 'assets/images/characters.png', 16, 16);
+		this.load.spritesheet('characters', 'assets/images/characters96.png', 96, 96);
 		this.load.spritesheet('dead', 'assets/images/dead.png', 16, 16);
 		this.load.spritesheet('potions', 'assets/images/potions.png', 16, 16);
 		this.load.spritesheet('dragons', 'assets/images/dragons.png', 32, 32);

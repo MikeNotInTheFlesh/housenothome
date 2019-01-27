@@ -182,7 +182,7 @@ HouseNotHome.Game.prototype = {
 
         this.enemies.forEachAlive(function(enemy) {
             if (enemy.visible && enemy.inCamera) {
-                if(enemy.name == 'Spider' &&  this.gold == 0){
+                if(enemy.name == 'Spider' &&  this.gold <= 0){
                     this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
                 } else if(enemy.name == 'Bat' && this.hasPlayground){
 

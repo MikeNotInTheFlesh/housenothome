@@ -49,7 +49,8 @@ HouseNotHome.Game.prototype = {
         this.taxCooldown = 0;
         this.gold = 0;
         this.xp = 0;
-        this.howBig = 2;
+        this.howBig = 1;
+        this.characterScale = 0.45;
         this.xpToNext = 20;
         this.goldForBoss = 5000;
         this.bossSpawned = false;
@@ -502,11 +503,12 @@ HouseNotHome.Game.prototype = {
                 //this.hasPets = true; // This doesn't exist yet
                 this.gameOver();
             } else if (collectable.name === 'chest') {
-                collectable.animations.play('open');
+                //collectable.animations.play('open');
                 this.gold += collectable.value;
-                this.goldSound.play();
+                collectable.destroy();
+                //this.goldSound.play();
                 this.notification = 'You open a chest and find ' + collectable.value + ' gold!';
-                collectable.lifespan = 1000;
+                //collectable.lifespan = 1000;
                // console.log("about to grow")
                 //console.log("growing to" + this.howBig+2);
                 //this.player.scale.setTo(6);
@@ -583,7 +585,7 @@ HouseNotHome.Game.prototype = {
         player.animations.add('right', [27, 28, 29], 10, true);
         player.animations.add('up', [39, 40, 41], 10, true);
         player.animations.play('down');
-        player.scale.setTo(2);
+        player.scale.setTo(this.characterScale);
 
        // influence.animations.add('down', [3, 4, 5], 10, true);
        // influence.animations.add('left', [15, 16, 17], 10, true);
@@ -663,6 +665,7 @@ HouseNotHome.Game.prototype = {
             enemy.reset(this.game.world.randomX, this.game.world.randomY);
         } while (Phaser.Math.distance(this.player.x, this.player.y, enemy.x, enemy.y) <= 400)
 
+
         var rnd = Math.random();
         if (rnd >= 0 && rnd < .3) enemy = this.generateSkeleton(enemy);
         else if (rnd >= .3 && rnd < .4) enemy = this.generateSlime(enemy);
@@ -670,6 +673,11 @@ HouseNotHome.Game.prototype = {
         else if (rnd >= .6 && rnd < .7) enemy = this.generateGhost(enemy);
         else if (rnd >= .7 && rnd < .75) enemy = this.generateSpider(enemy);
         else if (rnd >= .75 && rnd < 1) enemy = this.generateKidnapper(enemy);
+
+        enemy.scale.setTo(this.characterScale);
+        if (enemy.name == 'Spider') {
+            enemy.scale.setTo(0.6);
+        }
 
         console.log('Generated ' + enemy.name + ' with ' + enemy.health + ' health, ' + enemy.strength + ' strength, and ' + enemy.speed + ' speed.');
 
@@ -887,13 +895,15 @@ HouseNotHome.Game.prototype = {
 
     generateChest: function (location) {
 
-        var collectable = this.collectables.create(location.x, location.y, 'things');
-        collectable.scale.setTo(2);
-        collectable.animations.add('idle', [6], 0, true);
-        collectable.animations.add('open', [18, 30, 42], 10, false);
+        var collectable = this.collectables.create(location.x, location.y, 'things'); //set to 'things96'
+        collectable.scale.setTo(2); //was 16 pixels, now 96 pixels
+        collectable.animations.add('idle', [6], 0, true); //should stay the same
+        collectable.animations.add('open', [18, 30, 42], 10, false); //should just destroy
         collectable.animations.play('idle');
         collectable.name = 'chest'
         collectable.value = Math.floor(Math.random() * 150);
+
+        collectable.scale.setTo(0.45); //was 16 pixels, now 96 pixels
 
         return collectable;
     },
