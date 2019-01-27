@@ -183,7 +183,7 @@ HouseNotHome.Game.prototype = {
 
         this.enemies.forEachAlive(function(enemy) {
             if (enemy.visible && enemy.inCamera) {
-                if(enemy.name == 'Spider' &&  this.gold == 0){
+                if(enemy.name == 'Spider' &&  this.gold <= 0){
                     this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed);
 
                 } else if  //parent -> playground -> child -> grandparent -> pet
@@ -903,7 +903,7 @@ HouseNotHome.Game.prototype = {
         collectable.name = 'chest'
         collectable.value = Math.floor(Math.random() * 150);
 
-        collectable.scale.setTo(0.45); //was 16 pixels, now 96 pixels
+        //collectable.scale.setTo(0.45); //was 16 pixels, now 96 pixels
 
         return collectable;
     },
