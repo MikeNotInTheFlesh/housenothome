@@ -3,7 +3,11 @@ var HouseNotHome = HouseNotHome || {};
 
 // Initiate a new game and set the size of the entire windows
 // Phaser.AUTO means that whether the game will be rendered on a CANVAS element or using WebGL will depend on the browser
-HouseNotHome.game = new Phaser.Game(512, 384, Phaser.AUTO, '', null, false, false);
+HouseNotHome.game = new Phaser.Game(
+  window.innerWidth * 0.9,
+  window.innerHeight * 0.9,
+  Phaser.AUTO, '', null, false, false
+);
 
 HouseNotHome.game.state.add('Boot', HouseNotHome.Boot);
 HouseNotHome.game.state.add('Preloader', HouseNotHome.Preloader);
