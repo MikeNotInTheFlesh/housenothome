@@ -184,7 +184,7 @@ HouseNotHome.Game.prototype = {
             if (enemy.visible && enemy.inCamera) {
                 if(enemy.name == 'Spider' &&  this.gold == 0){
                     this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
-                } else if(enemy.name == 'Bat' && this.hasPlayground){
+                } else if(enemy.name == 'Child' && this.hasPlayground){
 
 
 
@@ -193,7 +193,7 @@ HouseNotHome.Game.prototype = {
                         this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
                     } else {
 
-                        //collectable.collected && (collectable.name === 'playground' || collectable.name === 'bat')
+                        //collectable.collected && (collectable.name === 'playground' || collectable.name === 'Child')
                         enemy.position.x = this.player.position.x + enemy.xdiff;
                         enemy.position.y = this.player.position.y + enemy.ydiff;
                         //enemy.position.x = this.player.position.x - 20;
@@ -432,18 +432,19 @@ HouseNotHome.Game.prototype = {
 
     collect: function(player, collectable) {
         collectable.health = 0;
-        if(collectable.collected && (collectable.name === 'playground'
-          || collectable.name === 'bat')
-          && this.hasParents){
+        if(collectable.collected && collectable.name === 'playground' && this.hasParents){
             collectable.position.x = this.player.position.x - 20;
             collectable.position.y = this.player.position.y;
-        } else if (collectable.collected && collectable.name == "Slime"){
+        } else if (collectable.collected && collectable.name == "Child" && this.hasPlayground){
           collectable.position.x = this.player.position.x;
           collectable.position.y = this.player.position.y;
-        } else if (collectable.collected && collectable.name == "Skeleton" && this.hasChildren){
+        } else if (collectable.collected && collectable.name == "Parent"){
+          collectable.position.x = this.player.position.x;
+          collectable.position.y = this.player.position.y;
+        } else if (collectable.collected && collectable.name == "Grandparent" && this.hasChildren){
           collectable.position.x = this.player.position.x;
           collectable.position.y = this.player.position.y + 20;
-        } else if (collectable.collected && collectable.name == "Ghost" && this.hasGrandparents){
+        } else if (collectable.collected && collectable.name == "Pet" && this.hasGrandparents){
           collectable.position.x = this.player.position.x + 20;
           collectable.position.y = this.player.position.y;
         }
@@ -470,7 +471,7 @@ HouseNotHome.Game.prototype = {
               //  collectable.position.x = this.player.position.x - 20;
                // collectable.position.y = this.player.position.y;
             }
-            else if (  collectable.name === 'Bat' && this.hasParents && this.hasPlayground){
+            else if (  collectable.name === 'Child' && this.hasPlayground){
                 //collectable.speed = 1000;
                 //this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
                 //this.enemyMovementHandler(collectable);
@@ -479,24 +480,24 @@ HouseNotHome.Game.prototype = {
                 collectable.position.x = this.player.position.x - 20;
                 collectable.position.y = this.player.position.y;
 
-            } else if (  collectable.name === 'Slime'){
+            } else if (  collectable.name === 'Parent'){
                 this.hasParents = true;
                 collectable.position.x = this.player.position.x;
                 collectable.position.y = this.player.position.y;
                 this.gold += collectable.value;
-            } else if (  collectable.name === 'Skeleton' && this.hasChildren){
+            } else if (  collectable.name === 'Grandparent' && this.hasChildren){
                 this.hasGrandparents = true;
                 collectable.position.x = this.player.position.x;
                 collectable.position.y = this.player.position.y + 20;
                 this.gold += collectable.value;
-            } else if (  collectable.name === 'Ghost' && this.hasGrandparents){
+            } else if (  collectable.name === 'Pet' && this.hasGrandparents){
                 //this.hasPets = true; // This doesn't exist yet
                 collectable.position.x = this.player.position.x + 20;
                 collectable.position.y = this.player.position.y;
                 this.gold += collectable.value;
-            } else if (  collectable.name === 'Kidnapper' && this.hasChildren){
-                //this.hasPets = true; // This doesn't exist yet
+            } else if (  collectable.name === 'Kidnapper' && this.hasPlayground){
                 this.hasChildren = false;
+                // The child should be destroyed here, but I don't know how...
                 // this.enemies.forEachDead(destroyIfDead(enemy));
                 //for (let child in children//////////////////////////////////////////////////////)
                 this.gold -= collectable.value;
@@ -684,7 +685,7 @@ HouseNotHome.Game.prototype = {
         enemy.howBig = 2;
         enemy.value = 6;
          // setStats: function (entity, name, health, speed, strength, reward, corpseSprite)
-        return this.setStats(enemy, 'Skeleton', 100, 5, 20, 5, 6);
+        return this.setStats(enemy, 'Grandparent', 100, 5, 20, 5, 6);
     },
 
     generateSlime: function (enemy) {
@@ -695,7 +696,7 @@ HouseNotHome.Game.prototype = {
         enemy.animations.add('up', [84, 85, 86], 10, true);
         enemy.howBig = 1;
         enemy.value = 6;
-        return this.setStats(enemy, 'Slime', 300, 5, 50, 10, 7);
+        return this.setStats(enemy, 'Parent', 300, 5, 50, 10, 7);
     },
 
     generateBat: function (enemy) {
@@ -707,7 +708,7 @@ HouseNotHome.Game.prototype = {
         enemy.howBig = 0;
         enemy.isCaptured = false;
         enemy.value = 6;
-        return this.setStats(enemy, 'Bat', 20, 5, 10, 2, 8);
+        return this.setStats(enemy, 'Child', 20, 5, 10, 2, 8);
     },
 
     generateGhost: function (enemy) {
@@ -718,7 +719,7 @@ HouseNotHome.Game.prototype = {
         enemy.animations.add('up', [90, 91, 92], 10, true);
         enemy.howBig = 3;
         enemy.value = 6;
-        return this.setStats(enemy, 'Ghost', 200, 5, 30, 7, 9);
+        return this.setStats(enemy, 'Pet', 200, 5, 30, 7, 9);
     },
 
     generateSpider: function (enemy) {
@@ -739,7 +740,7 @@ HouseNotHome.Game.prototype = {
         enemy.animations.add('right', [24, 25, 26], 10, true);
         enemy.animations.add('up', [36, 37, 38], 10, true);
         enemy.howBig = 4;
-        enemy.value = 6;
+        enemy.value = 100;
         return this.setStats(enemy, 'Kidnapper', 50, 5, 12, 4, 10);
     },
 
@@ -966,16 +967,16 @@ HouseNotHome.Game.prototype = {
         if (name === this.player.name) {
             this.playerSound.play();
 
-        } else if (name === 'Skeleton') {
+        } else if (name === 'Grandparent') {
             this.skeletonSound.play();
 
-        } else if (name === 'Slime') {
+        } else if (name === 'Parent') {
             this.slimeSound.play();
 
-        } else if (name === 'Bat') {
+        } else if (name === 'Child') {
             this.batSound.play();
 
-        } else if (name === 'Ghost') {
+        } else if (name === 'Pet') {
             this.ghostSound.play();
 
         } else if (name === 'Spider') {
