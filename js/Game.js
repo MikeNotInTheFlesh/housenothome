@@ -186,11 +186,18 @@ HouseNotHome.Game.prototype = {
                     this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
                 } else if(enemy.name == 'Bat' && this.hasPlayground){
 
+
+
+
                     if(!this.hasChildren){
                         this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed)
                     } else {
-                        enemy.position.x = this.player.position.x - 20;
-                        enemy.position.y = this.player.position.y;
+
+                        //collectable.collected && (collectable.name === 'playground' || collectable.name === 'bat')
+                        enemy.position.x = this.player.position.x + enemy.xdiff;
+                        enemy.position.y = this.player.position.y + enemy.ydiff;
+                        //enemy.position.x = this.player.position.x - 20;
+                        //enemy.position.y = this.player.position.y;
                         enemy.speed = 0;
                     }
 
@@ -427,14 +434,24 @@ HouseNotHome.Game.prototype = {
 
     collect: function(player, collectable) {
         collectable.health = 0;
-        if(collectable.collected && (collectable.name === 'playground' || collectable.name === 'bat')){
-            collectable.position.x = this.player.position.x - 20;
-            collectable.position.y = this.player.position.y;
+        if(collectable.collected && (collectable.name === 'playground' || collectable.name === 'Bat')){
+            collectable.position.x = this.player.position.x + collectable.xdiff;
+            collectable.position.y = this.player.position.y + collectable.ydiff;
         }
 
         if (!collectable.collected) {
             collectable.collected = true;
-            
+            this.hasChildren = true;
+            if((collectable.name === 'playground' || collectable.name === 'Bat')){
+                collectable.xdiff =  collectable.position.x - this.player.position.x;
+                collectable.xdiff = collectable.xdiff * 0.5;
+                collectable.ydiff =  collectable.position.y - this.player.position.y;
+                collectable.ydiff = collectable.ydiff * 0.5;
+                collectable.speed = 0;     
+            }
+
+
+
             var gain;
             if (collectable.name === 'gold') {
                 gain = this.player.level + Math.floor(Math.random() * 10);
@@ -444,22 +461,22 @@ HouseNotHome.Game.prototype = {
                 collectable.destroy();
             }
             else if (collectable.name === 'playground' ) {
-                if (this.hasPlayground) {
-                    this.destory;
-                }
-                this.hasPlayground = true;
+              //  if (this.hasPlayground) {
+               //     this.destory;
+              //  }
+              //  this.hasPlayground = true;
                 //this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
                 //this.enemyMovementHandler(collectable);
-                collectable.position.x = this.player.position.x - 20;
-                collectable.position.y = this.player.position.y;
+              //  collectable.position.x = this.player.position.x - 20;
+               // collectable.position.y = this.player.position.y;
             }
             else if (  collectable.name === 'Bat'){
                 //collectable.speed = 1000;
                 //this.game.physics.arcade.moveToObject(collectable,this.player, 1000);
                 //this.enemyMovementHandler(collectable);
-                this.hasChildren = true;
-                collectable.position.x = this.player.position.x - 20;
-                collectable.position.y = this.player.position.y;
+              //  this.hasChildren = true;
+               // collectable.position.x = this.player.position.x - 20;
+               //collectable.position.y = this.player.position.y;
 
             } else if (collectable.name === 'chest') {
                 collectable.animations.play('open');
