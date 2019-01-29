@@ -29,21 +29,23 @@ HouseNotHome.MainMenu.prototype = {
 		this.splash = this.add.image(this.game.width/2,this.game.height/2, 'logo');
 		this.splash.anchor.setTo(0.5);
 
-        // High score
-        text = "High score: "+this.highestScore;
-        style = { font: "15px Arial", fill: "#fff", align: "center" };
+    // High score
+    text = "High score: "+this.highestScore;
+    style = { font: "15px Arial", fill: "#fff", align: "center" };
 
-        this.score = this.game.add.text(this.game.width/2, this.game.height - 50, text, style);
-        this.score.anchor.set(0.5);
+    this.score = this.game.add.text(this.game.width/2, this.game.height - 50, text, style);
+    this.score.anchor.set(0.5);
 
-        // Game Over
-        if (HouseNotHome.MainMenu.isGameOver && HouseNotHome.MainMenu.isWinner == true){
-		  text = "You're now a Home!!";
-		} else if (HouseNotHome.MainMenu.isGameOver) {
-		  text = "Game Over";
-		} else { text = ""}
-		
-		style = { font: "90px Arial", fill: "#FFFF00", align: "center" };
+    // Game Over
+    if (HouseNotHome.MainMenu.isGameOver && HouseNotHome.MainMenu.isWinner == true){
+      style = { font: "90px Arial", fill: "#FFFF00", align: "center" };
+      text = "You're now a Home!";
+    } else if (HouseNotHome.MainMenu.isGameOver) {
+      style = { font: "90px Arial", fill: "#FF0000", align: "center" };
+      text = "Game Over!!";
+    } else { text = ""}
+
+
 
         this.gameOver = this.game.add.text(this.game.width/2, this.game.height / 6, text, style);
         this.gameOver.anchor.set(0.5);
