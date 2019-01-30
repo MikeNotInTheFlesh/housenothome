@@ -25,7 +25,7 @@ HouseNotHome.Preloader.prototype = {
 		this.load.setPreloadSprite(this.preloadBar);
 
 		//	Here we load the rest of the assets our game needs.
-		this.load.image('playButton', 'assets/images/play.png');
+		this.load.image('playButton', 'assets/images/play2.png');
 		this.load.image('flame', 'assets/images/flame.png');
 		this.load.image('sword', 'assets/images/sword.png');
 		this.load.image('levelParticle', 'assets/images/level-particle.png');
