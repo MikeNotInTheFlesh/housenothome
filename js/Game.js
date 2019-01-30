@@ -59,6 +59,9 @@ HouseNotHome.Game.prototype = {
         this.hasChildren = false;
         this.hasParents = false;
         this.hasGrandparents = false;
+        this.hasPet = false;
+        this.petCount = 0;
+
         // Generate objects
         this.generateObstacles();
         this.generateCollectables();
@@ -185,18 +188,18 @@ HouseNotHome.Game.prototype = {
             if (enemy.visible && enemy.inCamera) {
                 if(enemy.name == 'Spider' &&  this.gold <= 0){
                     this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed * 2);
-                } else if (enemy.name =='Kidnapper' && this.gold > 0) {
+                } else if (enemy.name =='Kidnapper' && this.gold > 0 + this.petCount * 30) {
                   this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed);
-                } else if (enemy.name =='Kidnapper' && this.gold > 100) {
+                } else if (enemy.name =='Kidnapper' && this.gold > 100 + this.petCount * 30) {
                   this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed * 2);
-                } else if (enemy.name =='Kidnapper' && this.gold <= 0) {
+                } else if (enemy.name =='Kidnapper' && this.gold <= 0 + this.petCount * 30) {
                   this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed * 0);
-                } else if  //parent -> grandparent -> pet -> child
+                } else if  //parent -> pet -> grandparent -> child
                     (  (enemy.name == 'Parent') //no prereq
                         //playground location is taken care of in collect() function
-                    || (enemy.name == 'Grandparent' && this.hasParents)
-                    || (enemy.name == 'Pet' && this.hasGrandparents)
-                    || (enemy.name == 'Child' && this.hasPet)
+                    || (enemy.name == 'Pet' && this.hasParents)
+                    || (enemy.name == 'Grandparent' && this.hasPet)
+                    || (enemy.name == 'Child' && this.hasGrandparents)
                     )
                 {
                     if(!enemy.collected) { //if this house-item has not been collected yet
@@ -456,11 +459,11 @@ HouseNotHome.Game.prototype = {
         //||  (collectable.name == 'Pet' && !this.hasGrandparents)) { //ghost-pet needs grandparent-skeleton
         //    hasPrerequisite = false;
         //}
-        // Parent -> Grandparent -> Pet -> Child
+        // Parent -> Pet -> Grandparent-> Child
         if (
-            (collectable.name == 'Grandparent' && !this.hasParents)
-        ||  (collectable.name == 'Pet' && !this.hasGrandparents)
-        ||  (collectable.name == 'Child' && !this.hasPet)
+            (collectable.name == 'Grandparent' && !this.hasPet)
+        ||  (collectable.name == 'Pet' && !this.hasParents)
+        ||  (collectable.name == 'Child' && !this.hasGrandparents)
         )
         {
             hasPrerequisite = false;
@@ -506,6 +509,7 @@ HouseNotHome.Game.prototype = {
                 //this.gold -= collectable.value;
             } else if ( collectable.name === 'Pet') { //grandparent-prereq is assumed from earlier prereq-check
                 this.hasPet = true;
+                this.petCount += 1;
                 //this.gold -= collectable.value;
             /////////////////////////////////////
             } else if (  collectable.name === 'Kidnapper' ){ //&& this.hasPlayground
@@ -1160,6 +1164,7 @@ HouseNotHome.Game.prototype = {
         this.hasParents = false;
         this.hasGrandparents = false;
         this.hasPet = false;
+        this.petCount = 0;
         this.game.state.start('MainMenu', true, false, this.xp + this.gold);
     },
 
