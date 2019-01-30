@@ -39,7 +39,7 @@ HouseNotHome.Game.prototype = {
         this.game.world.setBounds(0, 0, worldSize, worldSize);
 
         this.background = this.game.add.tileSprite(0, 0, this.game.world.width / 2, this.game.world.height / 2, 'tiles', 65);
-        this.background.scale.setTo(2);
+        this.background.scale.setTo(4); // Original: 2
 
         this.generateGrid(worldSize);
 
@@ -50,7 +50,7 @@ HouseNotHome.Game.prototype = {
         this.gold = 0;
         this.xp = 0;
         this.howBig = 1;
-        this.characterScale = 0.45;
+        this.characterScale = 1; // Original 0.45
         this.xpToNext = 20;
         this.goldForBoss = 5000;
         this.bossSpawned = false;
@@ -75,7 +75,7 @@ HouseNotHome.Game.prototype = {
         this.bossAttacks = this.generateAttacks('fireball', 1, 2000, 300);
 
         // Generate enemies - must be generated after player and player.level
-        this.generateEnemies(300);
+        this.generateEnemies(40);
 
         // Generate bosses
         this.bosses = this.game.add.group();
@@ -142,9 +142,9 @@ HouseNotHome.Game.prototype = {
               //  this.attack(this.player, this.playerAttacks);
             }
             if(this.game.time.now > this.taxCooldown){
-                this.taxCooldown = this.game.time.now + 1000;
+                this.taxCooldown = this.game.time.now + 100;
                 if(this.gold > 0){
-                    this.gold = this.gold - 10;
+                    this.gold = this.gold - 1;
                 }
 
             }
@@ -184,15 +184,13 @@ HouseNotHome.Game.prototype = {
         this.enemies.forEachAlive(function(enemy) {
             if (enemy.visible && enemy.inCamera) {
                 if(enemy.name == 'Spider' &&  this.gold <= 0){
-                    this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed);
-
-                //} else if  //parent -> playground -> child -> grandparent -> pet
-                //    (  (enemy.name == 'Parent') //no prereq
-                //        //playground location is taken care of in collect() function
-                //    || (enemy.name == 'Child' && this.hasPlayground)
-                //    || (enemy.name == 'Grandparent' && this.hasParents)
-                //    || (enemy.name == 'Pet' && this.hasGrandparents)
-                //    )
+                    this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed * 2);
+                } else if (enemy.name =='Kidnapper' && this.gold > 0) {
+                  this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed);
+                } else if (enemy.name =='Kidnapper' && this.gold > 100) {
+                  this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed * 2);
+                } else if (enemy.name =='Kidnapper' && this.gold <= 0) {
+                  this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed * 0);
                 } else if  //parent -> grandparent -> pet -> child
                     (  (enemy.name == 'Parent') //no prereq
                         //playground location is taken care of in collect() function
@@ -561,7 +559,7 @@ HouseNotHome.Game.prototype = {
     setStats: function (entity, name, health, speed, strength, reward, corpseSprite) {
 
         entity.animations.play('down');
-        entity.scale.setTo(2);
+        entity.scale.setTo(4); // Original: 2
 
         entity.body.collideWorldBounds = true;
         entity.body.velocity.x = 0,
@@ -635,7 +633,7 @@ HouseNotHome.Game.prototype = {
     setStats: function (entity, name, health, speed, strength, reward, corpseSprite) {
 
         entity.animations.play('down');
-        entity.scale.setTo(2);
+        entity.scale.setTo(4); // Original: 2
 
         entity.body.collideWorldBounds = true;
         entity.body.velocity.x = 0,
@@ -684,12 +682,12 @@ HouseNotHome.Game.prototype = {
         else if (rnd >= .3 && rnd < .4) enemy = this.generateSlime(enemy);
         else if (rnd >= .4 && rnd < .6) enemy = this.generateBat(enemy);
         else if (rnd >= .6 && rnd < .7) enemy = this.generateGhost(enemy);
-        else if (rnd >= .7 && rnd < .75) enemy = this.generateSpider(enemy);
-        else if (rnd >= .75 && rnd < 1) enemy = this.generateKidnapper(enemy);
+        else if (rnd >= .7 && rnd < .8) enemy = this.generateSpider(enemy);
+        else if (rnd >= .8 && rnd < 1) enemy = this.generateKidnapper(enemy);
 
         enemy.scale.setTo(this.characterScale);
         if (enemy.name == 'Spider') {
-            enemy.scale.setTo(0.6);
+            enemy.scale.setTo(1.2); // Original: 0.6
         }
 
         // console.log('Generated ' + enemy.name + ' with ' + enemy.health + ' health, ' + enemy.strength + ' strength, and ' + enemy.speed + ' speed.');
@@ -706,7 +704,7 @@ HouseNotHome.Game.prototype = {
         enemy.howBig = 2;
         enemy.value = 6;
          // setStats: function (entity, name, health, speed, strength, reward, corpseSprite)
-        return this.setStats(enemy, 'Grandparent', 100, 5, 20, 5, 6);
+        return this.setStats(enemy, 'Grandparent', 100, 50, 20, 5, 6);
     },
 
     generateSlime: function (enemy) {
@@ -717,7 +715,7 @@ HouseNotHome.Game.prototype = {
         enemy.animations.add('up', [84, 85, 86], 10, true);
         enemy.howBig = 1;
         enemy.value = 6;
-        return this.setStats(enemy, 'Parent', 300, 5, 50, 10, 7);
+        return this.setStats(enemy, 'Parent', 300, 50, 50, 10, 7);
     },
 
     generateBat: function (enemy) {
@@ -729,7 +727,7 @@ HouseNotHome.Game.prototype = {
         enemy.howBig = 0;
         enemy.isCaptured = false;
         enemy.value = 6;
-        return this.setStats(enemy, 'Child', 20, 5, 10, 2, 8);
+        return this.setStats(enemy, 'Child', 20, 50, 10, 2, 8);
     },
 
     generateGhost: function (enemy) {
@@ -740,7 +738,7 @@ HouseNotHome.Game.prototype = {
         enemy.animations.add('up', [90, 91, 92], 10, true);
         enemy.howBig = 3;
         enemy.value = 6;
-        return this.setStats(enemy, 'Pet', 200, 5, 30, 7, 9);
+        return this.setStats(enemy, 'Pet', 200, 50, 30, 7, 9);
     },
 
     generateSpider: function (enemy) {
@@ -751,7 +749,7 @@ HouseNotHome.Game.prototype = {
         enemy.animations.add('up', [93, 94, 95], 10, true);
         enemy.howBig = 4;
         enemy.value = 6;
-        return this.setStats(enemy, 'Spider', 50, 50, 12, 4, 10);
+        return this.setStats(enemy, 'Spider', 50, 60, 12, 4, 10);
     },
 
     generateKidnapper: function (enemy) {
@@ -762,7 +760,7 @@ HouseNotHome.Game.prototype = {
         enemy.animations.add('up', [36, 37, 38], 10, true);
         enemy.howBig = 4;
         enemy.value = 100;
-        return this.setStats(enemy, 'Kidnapper', 50, 5, 12, 4, 10);
+        return this.setStats(enemy, 'Kidnapper', 50, 100, 12, 4, 10);
     },
 
 
@@ -823,7 +821,7 @@ HouseNotHome.Game.prototype = {
         this.obstacles = this.game.add.group();
         this.obstacles.enableBody = true;
 
-        var amount = 100;
+        var amount = 90;
         for (var i = 0; i < amount; i++) {
             var point = this.getRandomLocation();
             var spriteIndex = Math.floor(Math.random() * 10);
@@ -866,8 +864,8 @@ HouseNotHome.Game.prototype = {
             obstacle.animations.add('tree', [38], 0, true);
             obstacle.animations.play('tree');
         }
-        obstacle.scale.setTo(2);
-        obstacle.body.setSize(8, 8, 4, -2);
+        obstacle.scale.setTo(4); // Original: 2
+        obstacle.body.setSize(16, 16, 4, -2); // Original: (8, 8, 4, -2)
         obstacle.body.moves = false;
 
         return obstacle;
@@ -879,7 +877,7 @@ HouseNotHome.Game.prototype = {
         this.collectables.enableBody = true;
         this.collectables.physicsBodyType = Phaser.Physics.ARCADE;
 
-        var amount = 100;
+        var amount = 10;
         for (var i = 0; i < amount; i++) {
             var point = this.getRandomLocation();
             this.generateChest(point);
@@ -895,7 +893,7 @@ HouseNotHome.Game.prototype = {
     generatePlayground: function (location) {
 
         var collectable = this.collectables.create(location.x, location.y, 'things');
-        collectable.scale.setTo(2);
+        collectable.scale.setTo(4); // Original: 2
         collectable.animations.add('idle', [1], 0, true);
        // collectable.animations.add('open', [18, 30, 42], 10, false);
         collectable.animations.play('idle');
@@ -909,7 +907,7 @@ HouseNotHome.Game.prototype = {
     generateChest: function (location) {
 
         var collectable = this.collectables.create(location.x, location.y, 'things'); //set to 'things96'
-        collectable.scale.setTo(2); //was 16 pixels, now 96 pixels
+        collectable.scale.setTo(1); //was 16 pixels, now 96 pixels // Original Scale: 2
         collectable.animations.add('idle', [6], 0, true); //should stay the same
         collectable.animations.add('open', [18, 30, 42], 10, false); //should just destroy
         collectable.animations.play('idle');
@@ -1098,27 +1096,12 @@ HouseNotHome.Game.prototype = {
             this.player.body.velocity.y = 0;
             this.player.animations.play('right');
 
-       // }// else if (this.game.input.activePointer.isDown){
-         //   if(this.game.input.activePointer.position.x < this.game.width *0.20 ){
-
-           // console.log(this.game.input.activePointer.position.y);
-
-         //   this.player.body.velocity.x = - this.player.speed;
-          //  this.player.body.velocity.y = 0;
-           // this.player.animations.play('left');
-           // }
-
-
         // Still
         } else {
             this.player.animations.stop();
             this.player.body.velocity.x = 0;
             this.player.body.velocity.y = 0;
         }
-      // This does not work.
-      //  this.instance.body.velocity.x = this.player.body.velocity.x;
-      //  this.instance.body.velocity.x = this.player.body.velocity.y
-
     },
 
     enemyMovementHandler: function (enemy) {
@@ -1247,10 +1230,4 @@ HouseNotHome.Game.prototype = {
 
        return array;
     }
-
-    // destroyIfDead: function (collectable){
-    //   if (!collectable.alive){
-    //     collectable.destroy();
-    //   }
-    // }
 };

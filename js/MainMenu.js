@@ -42,11 +42,8 @@ HouseNotHome.MainMenu.prototype = {
       text = "You're now a Home!";
     } else if (HouseNotHome.MainMenu.isGameOver) {
       style = { font: "90px Arial", fill: "#FF0000", align: "center" };
-      text = "Game Over!!";
+      text = "Game Over";
     } else { text = ""}
-
-
-
         this.gameOver = this.game.add.text(this.game.width/2, this.game.height / 6, text, style);
         this.gameOver.anchor.set(0.5);
 
@@ -57,8 +54,8 @@ HouseNotHome.MainMenu.prototype = {
         this.instructions = this.game.add.text(this.game.width/2, this.game.height - 25, text, style);
         this.instructions.anchor.set(0.5);
 
-		this.playButton = this.add.button(this.game.width/2, this.game.height/2 + 100, 'playButton', this.startGame, this);
-		this.playButton.anchor.setTo(0.5);
+		    this.playButton = this.add.button(this.game.width/2, this.game.height/2 + 100, 'playButton', this.startGame, this);
+		    this.playButton.anchor.setTo(0.5);
 	},
 
 	update: function () {
