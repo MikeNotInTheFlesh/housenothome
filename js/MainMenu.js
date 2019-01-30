@@ -51,7 +51,7 @@ HouseNotHome.MainMenu.prototype = {
         this.gameOver.anchor.set(0.5);
 
         // Instructions
-        text = "Move: WASD Keys   Attack: Hold Left-Mouse Button   Spell: Spacebar";
+        text = "Move: WASD Keys";
         style = { font: "15px Arial", fill: "#fff", align: "center" };
 
         this.instructions = this.game.add.text(this.game.width/2, this.game.height - 25, text, style);
