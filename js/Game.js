@@ -61,6 +61,7 @@ HouseNotHome.Game.prototype = {
         this.hasGrandparents = false;
         this.hasPet = false;
         this.petCount = 0;
+        this.grandparentCount = 0;
 
         // Generate objects
         this.generateObstacles();
@@ -146,9 +147,7 @@ HouseNotHome.Game.prototype = {
             }
             if(this.game.time.now > this.taxCooldown){
                 this.taxCooldown = this.game.time.now + 100;
-                if(this.gold > 0){
-                    this.gold = this.gold - 1;
-                }
+                this.gold = this.gold - 1;
 
             }
 
@@ -186,7 +185,7 @@ HouseNotHome.Game.prototype = {
 
         this.enemies.forEachAlive(function(enemy) {
             if (enemy.visible && enemy.inCamera) {
-                if(enemy.name == 'Spider' &&  this.gold <= 0){
+                if(enemy.name == 'Spider' &&  this.gold <= 0 - this.grandparentCount * 20){
                     this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed * 2);
                 } else if (enemy.name =='Kidnapper' && this.gold > 0 + this.petCount * 30) {
                   this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed);
@@ -194,12 +193,12 @@ HouseNotHome.Game.prototype = {
                   this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed * 2);
                 } else if (enemy.name =='Kidnapper' && this.gold <= 0 + this.petCount * 30) {
                   this.game.physics.arcade.moveToObject(enemy, this.player, enemy.speed * 0);
-                } else if  //parent -> pet -> grandparent -> child
+                } else if  //parent -> grandparent -> pet -> child
                     (  (enemy.name == 'Parent') //no prereq
                         //playground location is taken care of in collect() function
-                    || (enemy.name == 'Pet' && this.hasParents)
-                    || (enemy.name == 'Grandparent' && this.hasPet)
-                    || (enemy.name == 'Child' && this.hasGrandparents)
+                    || (enemy.name == 'Grandparent' && this.hasParents)
+                    || (enemy.name == 'Pet' && this.hasGrandparents)
+                    || (enemy.name == 'Child' && this.hasPet)
                     )
                 {
                     if(!enemy.collected) { //if this house-item has not been collected yet
@@ -459,11 +458,11 @@ HouseNotHome.Game.prototype = {
         //||  (collectable.name == 'Pet' && !this.hasGrandparents)) { //ghost-pet needs grandparent-skeleton
         //    hasPrerequisite = false;
         //}
-        // Parent -> Pet -> Grandparent-> Child
+        // Parent -> Grandparent -> Pet -> Child
         if (
-            (collectable.name == 'Grandparent' && !this.hasPet)
-        ||  (collectable.name == 'Pet' && !this.hasParents)
-        ||  (collectable.name == 'Child' && !this.hasGrandparents)
+            (collectable.name == 'Grandparent' && !this.hasParents)
+        ||  (collectable.name == 'Pet' && !this.hasGrandparents)
+        ||  (collectable.name == 'Child' && !this.hasPet)
         )
         {
             hasPrerequisite = false;
@@ -506,6 +505,7 @@ HouseNotHome.Game.prototype = {
                 //this.gold -= collectable.value;
             } else if ( collectable.name === 'Grandparent') { //child-prereq is assumed from earlier prereq-check
                 this.hasGrandparents = true;
+                this.grandparentCount += 1;
                 //this.gold -= collectable.value;
             } else if ( collectable.name === 'Pet') { //grandparent-prereq is assumed from earlier prereq-check
                 this.hasPet = true;
@@ -513,7 +513,9 @@ HouseNotHome.Game.prototype = {
                 //this.gold -= collectable.value;
             /////////////////////////////////////
             } else if (  collectable.name === 'Kidnapper' ){ //&& this.hasPlayground
-                this.gold = 0;
+                if (this.gold > 0) {
+                  this.gold = 0;
+                }
                 collectable.destroy();
             } else if (  collectable.name === 'Spider'){
                 this.gameOver();
@@ -825,7 +827,7 @@ HouseNotHome.Game.prototype = {
         this.obstacles = this.game.add.group();
         this.obstacles.enableBody = true;
 
-        var amount = 90;
+        var amount = 80;
         for (var i = 0; i < amount; i++) {
             var point = this.getRandomLocation();
             var spriteIndex = Math.floor(Math.random() * 10);
@@ -1165,6 +1167,7 @@ HouseNotHome.Game.prototype = {
         this.hasGrandparents = false;
         this.hasPet = false;
         this.petCount = 0;
+        this.grandparentCount = 0;
         this.game.state.start('MainMenu', true, false, this.xp + this.gold);
     },
 

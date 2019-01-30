@@ -30,7 +30,7 @@ HouseNotHome.MainMenu.prototype = {
 		this.splash.anchor.setTo(0.5);
 
     // High score
-    text = "High score: "+this.highestScore;
+    text = ""//"High score: "+this.highestScore;
     style = { font: "15px Arial", fill: "#fff", align: "center" };
 
     this.score = this.game.add.text(this.game.width/2, this.game.height - 50, text, style);
@@ -48,7 +48,7 @@ HouseNotHome.MainMenu.prototype = {
         this.gameOver.anchor.set(0.5);
 
         // Instructions
-        text = "Move: WASD Keys";
+        text = "Move: WASD Keys, or Touch";
         style = { font: "15px Arial", fill: "#fff", align: "center" };
 
         this.instructions = this.game.add.text(this.game.width/2, this.game.height - 25, text, style);
