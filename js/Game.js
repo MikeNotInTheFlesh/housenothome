@@ -460,11 +460,11 @@ HouseNotHome.Game.prototype = {
         //}
         // Parent -> Grandparent -> Pet -> Child
         if (
-            (collectable.name == 'Grandparent' && !this.hasParents) 
+            (collectable.name == 'Grandparent' && !this.hasParents)
         ||  (collectable.name == 'Pet' && !this.hasGrandparents)
         ||  (collectable.name == 'Child' && !this.hasPet)
-        )  
-        { 
+        )
+        {
             hasPrerequisite = false;
         }
 
@@ -1179,6 +1179,11 @@ HouseNotHome.Game.prototype = {
         } else {
             HouseNotHome.MainMenu.isWinner = false;
         }
+        this.hasPlayground = false;
+        this.hasChildren = false;
+        this.hasParents = false;
+        this.hasGrandparents = false;
+        this.hasPet = false;
         this.game.state.start('MainMenu', true, false, this.xp + this.gold);
     },
 
