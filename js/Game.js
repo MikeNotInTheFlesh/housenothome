@@ -513,13 +513,7 @@ HouseNotHome.Game.prototype = {
             } else if (  collectable.name === 'Kidnapper' ){ //&& this.hasPlayground
                 this.gold = 0;
                 collectable.destroy();
-                //this.hasChildren = false;
-                // The child should be destroyed here, but I don't know how...
-                // this.enemies.forEachDead(destroyIfDead(enemy));
-                //for (let child in children//////////////////////////////////////////////////////)
-                //this.gold -= collectable.value;
             } else if (  collectable.name === 'Spider'){
-                //this.hasPets = true; // This doesn't exist yet
                 this.gameOver();
             } else if (collectable.name === 'chest') {
                 //collectable.animations.play('open');
@@ -698,7 +692,7 @@ HouseNotHome.Game.prototype = {
             enemy.scale.setTo(0.6);
         }
 
-        console.log('Generated ' + enemy.name + ' with ' + enemy.health + ' health, ' + enemy.strength + ' strength, and ' + enemy.speed + ' speed.');
+        // console.log('Generated ' + enemy.name + ' with ' + enemy.health + ' health, ' + enemy.strength + ' strength, and ' + enemy.speed + ' speed.');
 
         return enemy;
     },
@@ -1050,33 +1044,32 @@ HouseNotHome.Game.prototype = {
             if(this.game.input.activePointer.position.y > this.game.height *0.80 ){
                 isDownTouch = true;
             }
-
-
-
-
-
         };
 
         // Up-Left
-        if (this.controls.up.isDown && this.controls.left.isDown) {
+        if ((this.controls.up.isDown && this.controls.left.isDown)
+            || (isUpTouch && isLeftTouch)) {
             this.player.body.velocity.x = -this.player.speed;
             this.player.body.velocity.y = -this.player.speed;
             this.player.animations.play('left');
 
         // Up-Right
-        } else if (this.controls.up.isDown && this.controls.right.isDown) {
+        } else if ((this.controls.up.isDown && this.controls.right.isDown)
+            || (isUpTouch && isRightTouch)) {
             this.player.body.velocity.x = this.player.speed;
             this.player.body.velocity.y = -this.player.speed;
             this.player.animations.play('right');
 
         // Down-Left
-        } else if (this.controls.down.isDown && this.controls.left.isDown) {
+        } else if ((this.controls.down.isDown && this.controls.left.isDown)
+            || (isDownTouch && isLeftTouch)) {
             this.player.body.velocity.x = -this.player.speed;
             this.player.body.velocity.y = this.player.speed;
             this.player.animations.play('left');
 
         // Down-Right
-        } else if (this.controls.down.isDown && this.controls.right.isDown) {
+        } else if ((this.controls.down.isDown && this.controls.right.isDown)
+            || (isDownTouch && isRightTouch)) {
             this.player.body.velocity.x = this.player.speed;
             this.player.body.velocity.y = this.player.speed;
             this.player.animations.play('right');
